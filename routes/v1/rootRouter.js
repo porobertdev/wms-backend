@@ -15,8 +15,17 @@ const signupRouter = require('./signupRouter');
 const loginRouter = require('./loginRouter');
 const isAuthenticated = require('../../middleware/isAuthenticated');
 const verifyAcessToken = require('../../middleware/verifyJWT');
+const loadEnvConfig = require('../../utils/loadEnv');
+
+loadEnvConfig();
 
 const rootRouter = Router();
+
+rootRouter.use('/api/v1/', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_HOST);
+    res.setHeader('Access-Control-Allow-Headers', 'Accept,Content-Type');
+    next();
+});
 
 rootRouter.get('/', rootController.get);
 rootRouter.use('/warehouses', warehouseRouter);
