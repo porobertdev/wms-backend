@@ -28,6 +28,8 @@ app.use(
         origin: process.env.FRONTEND_HOST,
     })
 );
+// Reduce fingerprinting
+app.disable('x-powered-by');
 
 app.get('/', (req, res) => res.send('<h2>Its working</h2>'));
 
