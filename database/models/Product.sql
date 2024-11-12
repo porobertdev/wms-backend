@@ -1,0 +1,26 @@
+DROP TABLE IF EXISTS product_category, product_manufacturer, product CASCADE;
+
+CREATE TABLE IF NOT EXISTS product_category(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS product_manufacturer(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(100)
+);
+
+
+CREATE TABLE IF NOT EXISTS product(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(255) NOT NULL,
+    sku VARCHAR(50),
+    description VARCHAR(255),
+    counter_type VARCHAR(20),
+    width DEC,
+    height DEC,
+    weight DEC,
+    price DEC,
+    category_id INT REFERENCES product_category(id) NOT NULL,
+    manufacturer_id INT REFERENCES product_manufacturer(id) NOT NULL
+);

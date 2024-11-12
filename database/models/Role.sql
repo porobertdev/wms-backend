@@ -1,0 +1,18 @@
+DROP TABLE IF EXISTS permission, user_role, role_permission CASCADE;
+
+CREATE TABLE IF NOT EXISTS permission(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_role(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS role_permission(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    role_id INT REFERENCES user_role(id) NOT NULL,
+    permission_id INT REFERENCES permission(id) NOT NULL
+);
+

@@ -1,0 +1,17 @@
+DROP TABLE IF EXISTS warehouse, bin_location CASCADE;
+
+CREATE TABLE IF NOT EXISTS warehouse(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    codename VARCHAR(10) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    created_at DATE
+);
+
+-- Locations
+CREATE TABLE IF NOT EXISTS bin_location(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    location_code VARCHAR(20) NOT NULL,
+    warehouse_id INT REFERENCES warehouse(id)
+);
+

@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS person CASCADE;
+
+CREATE TABLE IF NOT EXISTS person(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    birth_date DATE NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL
+);

@@ -1,0 +1,36 @@
+DROP TABLE IF EXISTS customer_order, order_items, order_package, shipment CASCADE;
+
+CREATE TABLE IF NOT EXISTS customer_order(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    customer_id INT REFERENCES customer(id) NOT NULL,
+    created_at DATE DEFAULT CURRENT_DATE,
+    shipping_fee INT DEFAULT 10,
+    shipping_date DATE,
+    order_status VARCHAR(20) DEFAULT 'Pending',
+    priority VARCHAR(20) DEFAULT 'Normal'
+);
+
+CREATE TABLE IF NOT EXISTS order_item(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    order_id INT REFERENCES customer_order(id) NOT NULL,
+    product_id INT REFERENCES product(id) NOT NULL,
+    quantity INT NOT NULL,
+    price DEC NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS order_package(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    order_id INT REFERENCES customer_order(id),
+    product_id INT REFERENCES product(id),
+    scan_status VARCHAR(20) DEFAULT 'Created',
+    user_id INT REFERENCES users(id) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS shipment (
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    order_id INT REFERENCES customer_order(id),
+    driver_id INT REFERENCES driver(id),
+    tracking_number VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    shipment_status VARCHAR(50) DEFAULT 'In Transit'
+);
