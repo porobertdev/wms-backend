@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS order_item(
 CREATE TABLE IF NOT EXISTS order_package(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     order_id INT REFERENCES customer_order(id),
-    product_id INT REFERENCES product(id),
+    product_id INT REFERENCES order_item(product_id),
     scan_status VARCHAR(20) DEFAULT 'Created',
     user_id INT REFERENCES users(id) NOT NULL
 );
