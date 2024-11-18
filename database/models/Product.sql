@@ -2,12 +2,12 @@ DROP TABLE IF EXISTS product_category, product_manufacturer, product CASCADE;
 
 CREATE TABLE IF NOT EXISTS product_category(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name VARCHAR(100)
+    name VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS product_manufacturer(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name VARCHAR(100)
+    name VARCHAR(100) UNIQUE
 );
 
 

@@ -5,8 +5,8 @@ const pool = require('./pool');
 const schemaOrder = [
     'Warehouse',
     'Person',
-    'Employee',
     'Role',
+    'Employee',
     'User',
     'Customer',
     'Product',
@@ -36,4 +36,4 @@ const initDb = async () => {
     }
 };
 
-module.exports = initDb;
+module.exports = { initDb };

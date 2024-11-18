@@ -2,9 +2,9 @@ DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE IF NOT EXISTS users(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    employee_id INT REFERENCES employee(id) NOT NULL,
+    employee_id INT REFERENCES employee(id) UNIQUE NOT NULL,
     role_id INT REFERENCES user_role(id) NOT NULL,
-    username VARCHAR(5) NOT NULL,
+    username VARCHAR(5) UNIQUE NOT NULL,
     password VARCHAR(4) NOT NULL,
     created_at DATE DEFAULT CURRENT_DATE
 )
