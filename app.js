@@ -1,12 +1,19 @@
 const express = require('express');
 const loadEnvConfig = require('./utils/loadEnv');
 const { rootRouter: v1RootRouter } = require('./routes/v1/rootRouter');
+const db = require('./database/db');
 
 // load env vars
 loadEnvConfig();
 
+// db
+db.init.initialize();
+
+if (process.env.NODE_ENV === 'dev') {
+    db.seeder.seed();
+}
+
 const PORT = process.env.PORT || 3000;
-console.log('🚀 ~ PORT:', PORT);
 const app = express();
 
 // Middleware to save payload data on req.body

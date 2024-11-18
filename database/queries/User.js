@@ -34,13 +34,16 @@ const getPersonEmployed = async (id) => {
 };
 
 const generateUsername = (fname, lname) => {
+    // TODO: handle duplicated username conflicts for persons with the same fname & lname
     const part1 = fname.slice(0, 2);
     const part2 = lname.slice(0, 3);
 
     return (part1 + part2).toLowerCase();
+    // return (
+    // (part1 + part2).toLowerCase() +
+    // `${faker.number.int({ min: 10, max: 99 })}`
+    // );
 };
-
-console.log(generateUsername('Popescu', 'Robert'));
 
 module.exports = {
     insertUser,
