@@ -13,6 +13,20 @@ const insertCustomer = async (data) => {
     );
 };
 
+/**
+ * Delete a customer
+ * @param {number} personID - person's ID from 'persons' table
+ */
+const deleteCustomer = async (personID) => {
+    await pool.query(
+        `
+        DELETE FROM customer
+        WHERE person_id = ${personID}
+        `
+    );
+};
+
 module.exports = {
-    insertCustomer,
+    insert: insertCustomer,
+    delete: deleteCustomer,
 };

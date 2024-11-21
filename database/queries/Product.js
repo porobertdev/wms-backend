@@ -12,6 +12,32 @@ const insertCategory = async (data) => {
     );
 };
 
+/**
+ * Delete a product category
+ * @param {string} name - category name
+ */
+const deleteCategory = async (name) => {
+    await pool.query(
+        `
+        DELETE FROM product_category
+        WHERE name = ${name}
+        `
+    );
+};
+
+/**
+ * Update name of a product category
+ * @param {string} name - category name
+ */
+const updateCategory = async (name) => {
+    await pool.query(
+        `
+        UPDATE product_category
+        SET name = ${name}
+        `
+    );
+};
+
 const insertManufacturer = async (data) => {
     const { name } = data;
 
@@ -21,6 +47,32 @@ const insertManufacturer = async (data) => {
         VALUES ($1)
         `,
         [name]
+    );
+};
+
+/**
+ * Delete a product category
+ * @param {string} name - category name
+ */
+const deleteManufacturer = async (name) => {
+    await pool.query(
+        `
+        DELETE FROM product_manufacturer
+        WHERE name = ${name}
+        `
+    );
+};
+
+/**
+ * Update name of a product manufacturer
+ * @param {string} name - manufacturer name
+ */
+const updateManufacturer = async (name) => {
+    await pool.query(
+        `
+        UPDATE product_manufacturer
+        SET name = ${name}
+        `
     );
 };
 
@@ -59,8 +111,46 @@ const insertProduct = async (data) => {
     );
 };
 
+/**
+ * Delete a product
+ * @param {string} name - category name
+ */
+const deleteProduct = async (name) => {
+    await pool.query(
+        `
+        DELETE FROM product
+        WHERE name = ${name}
+        `
+    );
+};
+
+/**
+ * Get SKU/barcode of a product to print a new label
+ * @param {number} productID - product ID
+ */
+const getSKU = async (productID) => {
+    const results = await pool.query(
+        `
+        SELECT sku FROM product
+        WHERE product_id = ${productID}
+        `
+    );
+
+    return results.rows[0];
+};
+
 module.exports = {
-    insertCategory,
-    insertManufacturer,
-    insertProduct,
+    category: {
+        insert: insertCategory,
+        delete: deleteCategory,
+        update: updateCategory,
+    },
+    manufacturer: {
+        insert: insertManufacturer,
+        delete: deleteManufacturer,
+        update: updateManufacturer,
+    },
+    insert: insertProduct,
+    delete: deleteProduct,
+    getSKU,
 };

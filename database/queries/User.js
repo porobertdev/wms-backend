@@ -1,11 +1,13 @@
 const pool = require('../pool');
 
+const tableName = 'users';
+
 const insertUser = async (data) => {
     const { employee_id, role_id, username, password } = data;
 
     await pool.query(
         `
-        INSERT INTO users
+        INSERT INTO ${tableName}
         (employee_id, role_id, username, password)
         VALUES ($1, $2, $3, $4)
         `,
@@ -15,16 +17,30 @@ const insertUser = async (data) => {
 
 const deleteUser = async (id) => {
     await pool.query(`
-        DELETE FROM users
+        DELETE FROM ${tableName}
         WHERE id = ${id}
         `);
 };
 
-const getPersonEmployed = async (id) => {
+const updateRole = async (username, roleID) => {
+    await pool.query(
+        `
+        UPDATE ${tableName}
+        SET role_id = ${roleID}
+        WHERE username = ${username}
+        `
+    );
+};
+
+/**
+ * Get person id of the employee for 'persons' table
+ * @param {number} employeeID - ID of the employee
+ */
+const getEmployee = async (employeeID) => {
     try {
         const person = await pool.query(`
         SELECT FROM person
-        WHERE id = ${id}
+        WHERE id = ${employeeID}
         `);
 
         return person.rows[0];
@@ -46,8 +62,9 @@ const generateUsername = (fname, lname) => {
 };
 
 module.exports = {
-    insertUser,
-    deleteUser,
-    getPersonEmployed,
+    insert: insertUser,
+    delete: deleteUser,
+    getEmployee,
     generateUsername,
+    updateRole,
 };

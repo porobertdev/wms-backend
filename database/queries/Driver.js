@@ -13,6 +13,19 @@ const insertDriver = async (data) => {
     );
 };
 
+/**
+ * Delete a driver
+ * @param {number} employeeID - ID corresponding to driver
+ */
+const deleteDriver = async (employeeID) => {
+    await pool.query(
+        `
+        DELETE FROM driver
+        WHERE employee_id = ${employeeID}
+        `
+    );
+};
+
 const insertDeliveryRoute = async (data) => {
     const { route_code, route_zone, delivery_hour } = data;
 
@@ -39,8 +52,29 @@ const insertRoutePackage = async (data) => {
     );
 };
 
+/**
+ * Return all packages of a delivery route
+ * @param {number} routeID - route ID from delivery_route
+ */
+const getRoutePackage = async (routeID) => {
+    const results = await pool.query(
+        `
+        SELECT * FROM route_package
+        WHERE route_id = ${routeID}
+        `
+    );
+
+    return results.rows;
+};
+
 module.exports = {
-    insertDriver,
-    insertDeliveryRoute,
-    insertRoutePackage,
+    insert: insertDriver,
+    delete: deleteDriver,
+    deliveryRoute: {
+        insert: insertDeliveryRoute,
+    },
+    routePackage: {
+        insert: insertRoutePackage,
+        getAll: getRoutePackage,
+    },
 };
