@@ -15,5 +15,5 @@ CREATE TABLE IF NOT EXISTS car(
     mileage INT NOT NULL,
     availability BOOLEAN NOT NULL,
     last_maintenance DATE,
-    issue INT REFERENCES car_issue(id)
+    issue INT REFERENCES car_issue(id) ON DELETE SET NULL
 );

@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS customer_order, order_item, order_package, shipment CASCADE
 
 CREATE TABLE IF NOT EXISTS customer_order(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    customer_id INT REFERENCES customer(id) NOT NULL,
+    customer_id INT REFERENCES customer(id) ON DELETE CASCADE NOT NULL,
     created_at DATE DEFAULT CURRENT_DATE,
     shipping_fee INT DEFAULT 10,
     shipping_date DATE,
@@ -12,18 +12,18 @@ CREATE TABLE IF NOT EXISTS customer_order(
 
 CREATE TABLE IF NOT EXISTS order_item(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    order_id INT REFERENCES customer_order(id) NOT NULL,
-    product_id INT REFERENCES product(id) NOT NULL UNIQUE,
+    order_id INT REFERENCES customer_order(id) ON DELETE CASCADE NOT NULL,
+    product_id INT REFERENCES product(id) ON DELETE CASCADE NOT NULL UNIQUE,
     quantity INT NOT NULL,
     price DEC NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS order_package(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    order_id INT REFERENCES customer_order(id) NOT NULL,
-    product_id INT REFERENCES order_item(product_id) NOT NULL,
+    order_id INT REFERENCES customer_order(id) ON DELETE SET NULL NOT NULL,
+    product_id INT REFERENCES order_item(product_id) ON DELETE CASCADE NOT NULL,
     scan_status VARCHAR(20) DEFAULT 'Created',
-    user_id INT REFERENCES users(id) NOT NULL
+    user_id INT REFERENCES users(id) ON DELETE SET NULL NOT NULL
 );
 
 /* CREATE TABLE IF NOT EXISTS s'hipment (

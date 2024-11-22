@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS user_role(
 
 CREATE TABLE IF NOT EXISTS role_permission(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    role_id INT REFERENCES user_role(id) NOT NULL,
-    permission_id INT REFERENCES permission(id) NOT NULL
+    role_id INT REFERENCES user_role(id) ON DELETE CASCADE NOT NULL,
+    permission_id INT REFERENCES permission(id) ON DELETE CASCADE NOT NULL
 );
 

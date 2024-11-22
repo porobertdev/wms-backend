@@ -23,5 +23,5 @@ CREATE TABLE IF NOT EXISTS driver(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     employee_id INT REFERENCES employee(id) NOT NULL,
     car_id INT REFERENCES car(id) NOT NULL UNIQUE,
-    delivery_route_id INT REFERENCES delivery_route(id) NOT NULL
+    delivery_route_id INT REFERENCES delivery_route(id) ON DELETE SET NULL NOT NULL
 );

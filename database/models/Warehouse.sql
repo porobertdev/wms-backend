@@ -12,6 +12,6 @@ CREATE TABLE IF NOT EXISTS warehouse(
 CREATE TABLE IF NOT EXISTS bin_location(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     location_code VARCHAR(20) NOT NULL UNIQUE,
-    warehouse_id INT REFERENCES warehouse(id)
+    warehouse_id INT REFERENCES warehouse(id) ON DELETE CASCADE
 );
 

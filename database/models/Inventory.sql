@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS user_transaction(
 
 CREATE TABLE IF NOT EXISTS product_inventory(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    product_id INT REFERENCES product(id) NOT NULL,
-    warehouse_id INT REFERENCES warehouse(id) NOT NULL,
-    location_id INT REFERENCES bin_location(id),
+    product_id INT REFERENCES product(id) ON DELETE CASCADE NOT NULL,
+    warehouse_id INT REFERENCES warehouse(id) ON DELETE CASCADE NOT NULL,
+    location_id INT REFERENCES bin_location(id) ON DELETE SET NULL,
     quantity INT
 );
