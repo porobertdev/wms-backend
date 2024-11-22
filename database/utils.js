@@ -15,12 +15,18 @@ You need to create a function that takes an array of objects, where each object 
 
 // const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+/**
+ * Generate Warehouse Bin Locations
+ * @param {Object} location
+ * @param {String} location.base - Base, e.g. T01, T02... T0N
+ * @param {Number} location.nested_num_start - Start from number, ,e.g. 1 for T01
+ * @param {Number} location.nested_num_end - End number
+ * @param {String} location.nested_letter_start - Letter Start
+ * @param {String} location.nested_letter_end - Letter End
+ */
 const generateBinLocations = (location) => {
     const {
         base,
-        location_num_start,
-        shelf_letter_start,
-        shelf_letter_end,
         nested_num_start,
         nested_num_end,
         nested_letter_start,
@@ -46,8 +52,4 @@ const generateBinLocations = (location) => {
     return location_codes;
 };
 
-const getRandomNumber = (limit) =>
-    // max+1 bcoz faker doesn't seem to include the actual number 🤔
-    faker.number.int(limit);
-
-module.exports = { getRandomNumber, generateBinLocations };
+module.exports = { generateBinLocations };

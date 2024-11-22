@@ -1,34 +1,5 @@
-const fs = require('node:fs');
-const path = require('node:path');
 const pool = require('../pool');
 const { tables } = require('../data');
-
-const dataPath = path.join(__dirname, 'data.json');
-
-const saveData = () => {
-    const json = JSON.stringify(tables);
-
-    fs.writeFileSync(dataPath, json, (err) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log('Data saved succesfully');
-        }
-    });
-};
-
-const getData = () => {
-    let result;
-
-    try {
-        const data = fs.readFileSync(dataPath, 'utf8');
-        result = JSON.parse(data);
-    } catch (err) {
-        console.error(err);
-    }
-
-    return result;
-};
 
 const insert = async (tableName, columns, values) => {
     const query = `
@@ -41,6 +12,11 @@ const insert = async (tableName, columns, values) => {
     await pool.query(query, values);
 };
 
+/**
+ * Get all columns and rows of a table
+ * @param {String} tableName
+ * @returns {Array}
+ */
 const getAll = async (tableName) => {
     const query = `SELECT * FROM ${tableName}`;
     const results = await pool.query(query);
@@ -49,11 +25,18 @@ const getAll = async (tableName) => {
     return rows;
 };
 
+/**
+ * Check if DB is seeded
+ * @returns {Boolean}
+ */
 const isDBSeeded = async () => {
     const rows = await getAll('warehouse');
     return rows.length === 0 ? false : true;
 };
 
+/**
+ * Seed the database with fake data
+ */
 const seed = async () => {
     // seed only if it wasn't done already
     if (!(await isDBSeeded())) {

@@ -1,5 +1,13 @@
 const pool = require('../pool');
 
+/**
+ * Insert a new warehouse
+ * @param {Object} data
+ * @param {String} data.codename - Warehouse Codename. e.g. RBUS for 'Refiliala Bucuresti-Sud'
+ * @param {String} data.city - City name
+ * @param {String} data.address - Address
+ * @param {String} data.created_at - Creation date
+ */
 const insertWarehouse = async (data) => {
     const { codename, city, address, created_at } = data;
 
@@ -13,10 +21,16 @@ const insertWarehouse = async (data) => {
     );
 };
 
+/**
+ * Insert a new bin location in a warehouse
+ * @param {Object} data
+ * @param {Number} data.location_code - Location Code. E.g.: T01-D-02-B
+ * @param {Number} data.warehouse_id - Warehouse ID
+ */
 const insertBinLocation = async (data) => {
     const { location_code, warehouse_id } = data;
 
-    await pool.query(
+    const results = await pool.query(
         `
         INSERT INTO bin_location
         (location_code, warehouse_id)
@@ -24,6 +38,8 @@ const insertBinLocation = async (data) => {
         `,
         [location_code, warehouse_id]
     );
+
+    return results;
 };
 
 module.exports = {

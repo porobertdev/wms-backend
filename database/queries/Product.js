@@ -1,5 +1,10 @@
 const pool = require('../pool');
 
+/**
+ * Add a new category
+ * @param {Object} data
+ * @param {String} data.name - name
+ */
 const insertCategory = async (data) => {
     const { name } = data;
 
@@ -38,6 +43,11 @@ const updateCategory = async (name) => {
     );
 };
 
+/**
+ * Add a new manufacturer
+ * @param {Object} data
+ * @param {String} data.name - name
+ */
 const insertManufacturer = async (data) => {
     const { name } = data;
 
@@ -76,6 +86,20 @@ const updateManufacturer = async (name) => {
     );
 };
 
+/**
+ * Add a new product
+ * @param {Object} data
+ * @param {String} data.name - Name
+ * @param {String} data.sku - SKU Code
+ * @param {String} data.description - Description
+ * @param {String} data.counter_type - Counting Type for Picking
+ * @param {Number} data.width - Width
+ * @param {Number} data.height - Height
+ * @param {Number} data.weight - Weight
+ * @param {Number} data.price - Price
+ * @param {Number} data.category_id - Category ID
+ * @param {Number} data.manufacturer_id - Manufacturer ID
+ */
 const insertProduct = async (data) => {
     const {
         name,

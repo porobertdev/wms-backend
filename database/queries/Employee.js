@@ -1,15 +1,23 @@
 const pool = require('../pool');
 
+/**
+ * Add an employee
+ * @param {Object} data
+ * @param {Number} data.person_id - Person ID from persons table
+ * @param {Number} data.warehouse_id - Warehouse ID from warehouse table
+ * @param {Number} data.role_id - Role ID from user_role table
+ * @param {Number} data.salary - Salary
+ */
 const insert = async (data) => {
-    const { id, warehouse_id, role_id, salary } = data;
+    const { person_id, warehouse_id, role_id, salary } = data;
 
     await pool.query(
         `
         INSERT INTO employee
-        (id, warehouse_id, role_id, salary)
+        (person_id, warehouse_id, role_id, salary)
         VALUES ($1, $2, $3, $4)
         `,
-        [id, warehouse_id, role_id, salary]
+        [person_id, warehouse_id, role_id, salary]
     );
 };
 
@@ -26,7 +34,16 @@ const deleteEmployee = async (employeeID) => {
     );
 };
 
-const changeWarehouse = async (employeeID, warehouseID) => {
+/**
+ * Transfer employee to another warehouse
+ * @param {Object} data
+ * @param {Number} data.employeeID - Employee ID
+ * @param {Number} data.warehouseID - Warehouse ID
+ * @returns {any}
+ */
+const changeWarehouse = async (data) => {
+    const { employeeID, warehouseID } = data;
+
     await pool.query(
         `
         UPDATE employee

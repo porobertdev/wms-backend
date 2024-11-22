@@ -133,10 +133,10 @@ const users = {
                 person.data[employee.data[i + 1].person_id].first_name,
                 person.data[employee.data[i + 1].person_id].last_name
             ), */
-            username: generateUsername(
-                faker.person.firstName(),
-                faker.person.lastName()
-            ),
+            username: generateUsername({
+                fname: faker.person.firstName(),
+                lname: faker.person.lastName(),
+            }),
             password: faker.number.int({ min: 1000, max: 9999 }),
         };
     }),

@@ -1,5 +1,12 @@
 const pool = require('../pool');
 
+/**
+ * Add a new driver
+ * @param {Object} data
+ * @param {Number} data.employee_id - Employee ID
+ * @param {Number} data.car_id - Car ID
+ * @param {Number} data.delivery_route_id - Delivery Route ID
+ */
 const insertDriver = async (data) => {
     const { employee_id, car_id, delivery_route_id } = data;
 
@@ -26,6 +33,13 @@ const deleteDriver = async (employeeID) => {
     );
 };
 
+/**
+ * Add delivery route
+ * @param {Object} data
+ * @param {String} data.route_code - For example, 'local 15'
+ * @param {String} data.route_zone - Route Zone: can be a city or area
+ * @param {String} data.delivery_hour - Delivery Hour
+ */
 const insertDeliveryRoute = async (data) => {
     const { route_code, route_zone, delivery_hour } = data;
 
@@ -39,6 +53,12 @@ const insertDeliveryRoute = async (data) => {
     );
 };
 
+/**
+ * Add a package to a route
+ * @param {Object} data
+ * @param {Number} data.route_id - Route ID from delivery_route
+ * @param {Number} data.package_id - Package ID from order_package
+ */
 const insertRoutePackage = async (data) => {
     const { route_id, package_id } = data;
 

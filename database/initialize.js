@@ -3,6 +3,7 @@ const path = require('node:path');
 const pool = require('./pool');
 const { getAll } = require('./seeder/seeder');
 
+// we need to create them in order to avoid Primary-Foreign keys conflicts
 const schemaOrder = [
     'Warehouse',
     'Person',
@@ -17,12 +18,20 @@ const schemaOrder = [
     'Driver',
 ];
 
+/**
+ * Check if DB Schema is created
+ * @returns {Boolean}
+ */
 const isSchemaCreated = async () => {
     const rows = await getAll('warehouse');
 
     return rows.length === 0 ? false : true;
 };
 
+/**
+ * Initialize the DB Schema
+ * @returns {any}
+ */
 const initialize = async () => {
     if (!(await isSchemaCreated())) {
         console.info('[DB] - Creating Schema...');

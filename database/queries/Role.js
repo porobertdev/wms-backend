@@ -1,6 +1,13 @@
 const pool = require('../pool');
 
-const insertPermission = async (name) => {
+/**
+ * Add a new permission
+ * @param {Object} data
+ * @param {String} data.name - Name
+ */
+const insertPermission = async (data) => {
+    const { name } = data;
+
     await pool.query(
         `
         INSERT INTO permission
@@ -24,7 +31,14 @@ const deletePermission = async (name) => {
     );
 };
 
-const insertUserRole = async (name) => {
+/**
+ * Add a new user role
+ * @param {Object} data
+ * @param {String} data.name - Name
+ */
+const insertUserRole = async (data) => {
+    const { name } = data;
+
     await pool.query(
         `
         INSERT INTO user_role

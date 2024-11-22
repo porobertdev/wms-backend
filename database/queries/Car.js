@@ -1,5 +1,16 @@
 const pool = require('../pool');
 
+/**
+ * Insert a new warehouse
+ * @param {Object} data
+ * @param {String} data.license_plate - License plate
+ * @param {String} data.manufacturer - Manufacturer
+ * @param {String} data.model - Model
+ * @param {String} data.color - Creation date
+ * @param {Number} data.capacity - Capaciy
+ * @param {Number} data.mileage - Mileage
+ * @param {Boolean} data.availability - Availability: true/false
+ */
 const insertCar = async (data) => {
     const {
         license_plate,
@@ -48,6 +59,11 @@ const deleteCar = async (licensePlate) => {
     );
 };
 
+/**
+ * Add a new car issue to car_issue table
+ * @param {Object} data
+ * @param {String} data.name - name
+ */
 const insertCarIssue = async (data) => {
     const { name } = data;
 

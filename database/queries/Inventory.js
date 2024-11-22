@@ -1,5 +1,14 @@
 const pool = require('../pool');
 
+/**
+ * Description
+ * @param {Object} data
+ * @param {Number} data.product_id - Product ID
+ * @param {Number} data.location_id - Bin Location ID
+ * @param {Number} data.quantity_change - New quantity
+ * @param {String} data.transaction_type - Transaction name
+ * @param {Number} data.user_id - User ID
+ */
 const insertTransaction = async (data) => {
     const {
         product_id,

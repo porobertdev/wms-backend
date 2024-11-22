@@ -1,5 +1,11 @@
 const pool = require('../pool');
 
+/**
+ * Add a new order
+ * @param {Object} data
+ * @param {Number} data.customer_id - Customer ID
+ * @param {Date} data.shipping_date - Shipping Date
+ */
 const insertOrder = async (data) => {
     const { customer_id, shipping_date } = data;
 
@@ -45,6 +51,14 @@ const updatePriority = async (orderID, priority) => {
     return results.rows;
 };
 
+/**
+ * Add an item to existing order
+ * @param {Object} data
+ * @param {Number} data.order_id - Order ID
+ * @param {Number} data.product_id - Product ID
+ * @param {Number} data.quantity - Quantity
+ * @param {Number} data.price - Product Price
+ */
 const insertItem = async (data) => {
     const { order_id, product_id, quantity, price } = data;
 
@@ -58,6 +72,14 @@ const insertItem = async (data) => {
     );
 };
 
+/**
+ * Create a new package containing products
+ * @param {Object} data
+ * @param {Number} data.order_id - Order ID
+ * @param {Number} data.product_id - Product ID
+ * @param {String} data.scan_status - Scan Status Name
+ * @param {Number} data.user_id - User ID
+ */
 const insertPackage = async (data) => {
     const { order_id, product_id, scan_status, user_id } = data;
 
@@ -86,6 +108,13 @@ const updatePackageStatus = async (packageID, status) => {
     );
 };
 
+/**
+ * Create shipment for an order
+ * @param {Object} data
+ * @param {Number} data.order_id - Order ID
+ * @param {Number} data.driver_id - Driver ID
+ * @param {String} data.tracking_number - Tracking number like AWB
+ */
 const insertShipment = async (data) => {
     const { order_id, driver_id, tracking_number } = data;
 

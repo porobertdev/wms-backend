@@ -1,5 +1,16 @@
 const pool = require('../pool');
 
+/**
+ * Add a new person
+ * @param {Object} data
+ * @param {String} data.fname - First Name
+ * @param {String} data.lname - Last Name
+ * @param {Date} data.birth_date - Birth Date
+ * @param {String} data.address - Street Address
+ * @param {String} data.city - City
+ * @param {String} data.phone_number - Phone Number
+ * @returns {any}
+ */
 const insertPerson = async (data) => {
     const { fname, lname, birth_date, address, city, phone_number } = data;
 

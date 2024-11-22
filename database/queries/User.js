@@ -2,6 +2,14 @@ const pool = require('../pool');
 
 const tableName = 'users';
 
+/**
+ * Add a new user
+ * @param {Object} data
+ * @param {Number} data.employee_id - Employee ID
+ * @param {Number} data.role_id - Role ID
+ * @param {String} data.username - Username
+ * @param {String} data.password - Password
+ */
 const insertUser = async (data) => {
     const { employee_id, role_id, username, password } = data;
 
@@ -15,6 +23,10 @@ const insertUser = async (data) => {
     );
 };
 
+/**
+ * Delete a user
+ * @param {Number} id - User ID
+ */
 const deleteUser = async (id) => {
     await pool.query(`
         DELETE FROM ${tableName}
@@ -22,6 +34,10 @@ const deleteUser = async (id) => {
         `);
 };
 
+/**
+ * Update the role for a user
+ * @param {Number} id - User ID
+ */
 const updateRole = async (username, roleID) => {
     await pool.query(
         `
@@ -49,7 +65,14 @@ const getEmployee = async (employeeID) => {
     }
 };
 
-const generateUsername = (fname, lname) => {
+/**
+ * Generate a username based on first and last names
+ * @param {Object} data
+ * @param {String} data.fname - First name
+ * @param {String} data.lname - Last name
+ */
+const generateUsername = (data) => {
+    const { fname, lname } = data;
     // TODO: handle duplicated username conflicts for persons with the same fname & lname
     const part1 = fname.slice(0, 2);
     const part2 = lname.slice(0, 3);
