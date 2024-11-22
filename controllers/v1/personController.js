@@ -3,7 +3,16 @@ const { person } = require('../../database/db');
 module.exports = {
     createPerson: async (req, res, next) => {
         try {
-            await person.insert(req.body);
+            const { fname, lname, birth_date, address, city, phone_number } =
+                req.body;
+            await person.insert({
+                fname,
+                lname,
+                birth_date,
+                address,
+                city,
+                phone_number,
+            });
 
             res.json({
                 success: true,
