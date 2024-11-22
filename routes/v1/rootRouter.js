@@ -7,5 +7,6 @@ const rootRouter = Router();
 
 rootRouter.get('/', rootController.get);
 rootRouter.use('/warehouses', warehouseRouter);
+rootRouter.use('/persons', personRouter);
 
 module.exports = { rootRouter };

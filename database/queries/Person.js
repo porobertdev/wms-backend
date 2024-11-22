@@ -24,6 +24,36 @@ const insertPerson = async (data) => {
     );
 };
 
+/**
+ * Get a person by ID
+ * @param {Number} - person ID from persons table
+ * @returns {Array}
+ */
+const getPersonByID = async (id) => {
+    const result = await pool.query(`
+        SELECT * FROM person
+        WHERE id = ${id}
+        `);
+
+    return result;
+};
+
+/**
+ * Delete person by ID
+ * @param {Number} - person ID from persons table
+ * @returns {Array}
+ */
+const deletePerson = async (id) => {
+    const result = await pool.query(`
+        DELETE FROM person
+        WHERE id = ${id}
+        `);
+
+    return result;
+};
+
 module.exports = {
-    insertPerson,
+    insert: insertPerson,
+    delete: deletePerson,
+    get: getPersonByID,
 };
