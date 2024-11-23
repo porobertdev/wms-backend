@@ -3,6 +3,21 @@ const pool = require('../pool');
 const tableName = 'users';
 
 /**
+ * Get user by ID
+ * @param {Number} id - User ID
+ */
+const getUser = async (id) => {
+    const result = await pool.query(
+        `
+        SELECT * FROM ${tableName}
+        WHERE id = ${id}
+        `
+    );
+
+    return result.rows[0];
+};
+
+/**
  * Add a new user
  * @param {Object} data
  * @param {Number} data.employee_id - Employee ID
@@ -11,6 +26,7 @@ const tableName = 'users';
  * @param {String} data.password - Password
  */
 const insertUser = async (data) => {
+    console.log('🚀 ~ insertUser ~ data:', data);
     const { employee_id, role_id, username, password } = data;
 
     await pool.query(
@@ -26,43 +42,33 @@ const insertUser = async (data) => {
 /**
  * Delete a user
  * @param {Number} id - User ID
+ * @returns {Boolean}
  */
 const deleteUser = async (id) => {
-    await pool.query(`
+    const result = await pool.query(`
         DELETE FROM ${tableName}
         WHERE id = ${id}
         `);
+
+    return result.rowCount === 1 ? true : false;
 };
 
 /**
  * Update the role for a user
- * @param {Number} id - User ID
+ * @param {String} username - Username
+ * @param {Number} id - New Role ID
+ * @returns {Boolean} - True/false based on updating success
  */
 const updateRole = async (username, roleID) => {
-    await pool.query(
+    const result = await pool.query(
         `
         UPDATE ${tableName}
         SET role_id = ${roleID}
         WHERE username = ${username}
         `
     );
-};
 
-/**
- * Get person id of the employee for 'persons' table
- * @param {number} employeeID - ID of the employee
- */
-const getEmployee = async (employeeID) => {
-    try {
-        const person = await pool.query(`
-        SELECT FROM person
-        WHERE id = ${employeeID}
-        `);
-
-        return person.rows[0];
-    } catch (err) {
-        console.error(err);
-    }
+    return result.rowCount === 1 ? true : false;
 };
 
 /**
@@ -85,9 +91,9 @@ const generateUsername = (data) => {
 };
 
 module.exports = {
+    get: getUser,
     insert: insertUser,
     delete: deleteUser,
-    getEmployee,
     generateUsername,
     updateRole,
 };

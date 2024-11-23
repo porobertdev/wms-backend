@@ -99,6 +99,23 @@ const getEmployeeByWarehouse = async (warehouse_id) => {
     return results.rows;
 };
 
+/**
+ * Get person id of the employee for 'persons' table
+ * @param {number} employeeID - ID of the employee
+ */
+const getPersonID = async (employeeID) => {
+    try {
+        const person = await pool.query(`
+        SELECT person_id FROM employee
+        WHERE id = ${employeeID}
+        `);
+
+        return person.rows[0];
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 module.exports = {
     tableName,
     insert,
@@ -107,4 +124,5 @@ module.exports = {
     getAllEmployees,
     getEmployeeByID,
     getEmployeeByWarehouse,
+    getPersonID,
 };

@@ -45,7 +45,7 @@ module.exports = {
             const result = await person.delete(user_id);
             let json;
 
-            if (result.rowCount === 1) {
+            if (result) {
                 json = {
                     success: true,
                     message: 'Person has been deleted.',

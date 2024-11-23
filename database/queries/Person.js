@@ -30,18 +30,19 @@ const insertPerson = async (data) => {
  * @returns {Array}
  */
 const getPersonByID = async (id) => {
+    console.log('🚀 ~ getPersonByID ~ id:', id);
     const result = await pool.query(`
         SELECT * FROM person
         WHERE id = ${id}
         `);
 
-    return result;
+    return result.rows[0];
 };
 
 /**
  * Delete person by ID
  * @param {Number} - person ID from persons table
- * @returns {Array}
+ * @returns {Boolean}
  */
 const deletePerson = async (id) => {
     const result = await pool.query(`
@@ -49,7 +50,7 @@ const deletePerson = async (id) => {
         WHERE id = ${id}
         `);
 
-    return result;
+    return result.rowCount === 1 ? true : false;
 };
 
 module.exports = {
