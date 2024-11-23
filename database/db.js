@@ -12,7 +12,7 @@ const inventory = require('./queries/Inventory');
 const order = require('./queries/Order');
 const car = require('./queries/Car');
 const driver = require('./queries/Driver');
-const { insert, update, deleteRow } = require('./queries/Dynamic');
+const dynamic = require('./queries/Dynamic');
 
 module.exports = {
     init,
@@ -29,7 +29,5 @@ module.exports = {
     car,
     driver,
     // dynamic queries
-    insert,
-    update,
-    deleteRow,
+    dynamic,
 };

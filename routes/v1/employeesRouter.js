@@ -17,7 +17,7 @@ any field in the table with one endpoint.
 That is easier to maintain since we need
 less endpoints and SQL queries.
 */
-employeesRouter.get('/', employeesController.getAllEmployees);
+employeesRouter.get('/', employeesController.get);
 employeesRouter.post('/', employeesController.add);
 // :employee_id
 employeesRouter.get('/:employee_id', employeesController.getEmployeeByID);

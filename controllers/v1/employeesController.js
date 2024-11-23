@@ -1,6 +1,29 @@
 const { employee } = require('../../database/db');
 
 module.exports = {
+    get: async (req, res, next) => {
+        try {
+            // const { employee_id } = req.params;
+            const { columns, where } = req.query;
+            console.log('🚀 ~ get: ~ where:', where);
+            console.log('🚀 ~ get: ~ columns:', columns);
+
+            const results = await employee.get({
+                tableName: 'employee',
+                columns,
+                where: {
+                    salary: '< 5000',
+                },
+            });
+
+            res.json({
+                success: true,
+                employees: results,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
     add: async (req, res, next) => {
         try {
             const { person_id, warehouse_id, role_id, salary } = req.body;
@@ -50,8 +73,11 @@ module.exports = {
 
             const result = await employee.update({
                 tableName: 'employee',
-                id: employee_id,
                 payload,
+                where: {
+                    id: employee_id,
+                    person_id: 61,
+                },
             });
 
             if (result) {
@@ -71,7 +97,9 @@ module.exports = {
     },
     getAllEmployees: async (req, res, next) => {
         try {
-            const results = await employee.getAllEmployees();
+            const results = await employee.get({
+                tableName: 'employee',
+            });
 
             res.json({
                 success: true,

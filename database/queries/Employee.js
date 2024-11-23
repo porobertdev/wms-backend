@@ -1,27 +1,6 @@
-const { insert, update, deleteRow } = require('../db');
+const { get, insert, update, deleteRow } = require('../queries/Dynamic');
 const pool = require('../pool');
 const tableName = 'employee';
-
-/**
- * Add an employee
- * @param {Object} data
- * @param {Number} data.person_id - Person ID from persons table
- * @param {Number} data.warehouse_id - Warehouse ID from warehouse table
- * @param {Number} data.role_id - Role ID from user_role table
- * @param {Number} data.salary - Salary
- */
-const insert = async (data) => {
-    const { person_id, warehouse_id, role_id, salary } = data;
-
-    await pool.query(
-        `
-        INSERT INTO employee
-        (person_id, warehouse_id, role_id, salary)
-        VALUES ($1, $2, $3, $4)
-        `,
-        [person_id, warehouse_id, role_id, salary]
-    );
-};
 
 /**
  * Get a list of all employees
@@ -65,6 +44,7 @@ const getEmployeeByWarehouse = async (warehouse_id) => {
 
 module.exports = {
     tableName,
+    get,
     insert,
     update,
     delete: deleteRow,

@@ -1,5 +1,40 @@
 const pool = require('../pool');
 
+const createWhereContraint = (obj) => {
+    return (
+        'WHERE ' +
+        Object.keys(obj)
+            .map((key) => `${key} = ${obj[key]}`)
+            .join(' AND ')
+    );
+};
+
+const joinKeyValues = (obj, joiner) =>
+    `${Object.keys(obj)
+        .map((key) => `${key} = ${obj[key]}`)
+        .join(joiner)}`;
+
+/**
+ * Get new records from a table dynamically
+ * @param {Object} data
+ * @param {String} data.tableName - Table name
+ * @param {Object} data.payload - key-value pairs representing column-value pairs
+ * @returns {Array}
+ */
+const get = async (data) => {
+    const { tableName, columns, where } = data;
+    console.log('🚀 ~ get ~ where:', where);
+
+    const query = `
+        SELECT ${columns === '*' ? columns : columns.split(',').join(', ')} FROM ${tableName}
+        ${where ? createWhereContraint(where) : ''}
+        `;
+    console.log('🚀 ~ get ~ query:', query);
+
+    const results = await pool.query(query);
+    return results.rows;
+};
+
 /**
  * Insert new records into a table dynamically
  * @param {Object} data
@@ -29,14 +64,13 @@ const insert = async (data) => {
  * @returns {Boolean} - True/false based on updating success
  */
 const update = async (data) => {
-    const { tableName, id, payload } = data;
+    const { tableName, payload, where } = data;
     const query = `
         UPDATE ${tableName}
-        SET ${Object.keys(payload)
-            .map((key) => `${key} = ${payload[key]}`)
-            .join(', ')}
-        WHERE id = ${id}
-        `;
+        SET ${joinKeyValues(payload, `, `)}
+            ${where ? createWhereContraint(where) : ''}`;
+    console.log('🚀 ~ update ~ query:', query);
+
     const result = await pool.query(query);
 
     return result.rowCount === 1 ? true : false;
@@ -59,4 +93,4 @@ const deleteRow = async (data) => {
     return result.rowCount === 1 ? true : false;
 };
 
-module.exports = { insert, update, deleteRow };
+module.exports = { get, insert, update, deleteRow };
