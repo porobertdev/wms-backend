@@ -35,6 +35,48 @@ const deleteEmployee = async (employeeID) => {
 };
 
 /**
+ * Get a list of all employees
+ * @returns {Array}
+ */
+const getAllEmployees = async () => {
+    const results = await pool.query(`
+        SELECT * FROM employee
+        `);
+
+    return results.rows;
+};
+
+/**
+ * Get a list of all employees
+ * @returns {Array}
+ */
+const getEmployeeByID = async (id) => {
+    const results = await pool.query(`
+        SELECT * FROM employee
+        WHERE id = ${id}
+        `);
+
+    return results.rows[0];
+};
+
+/**
+ * Get a list of all employees
+ * @param {Object} data
+ * @param {Number} data.warehouse_id - Warehouse ID
+ * @returns {Array}
+ */
+const getWarehouseEmployees = async (data) => {
+    const { warehouse_id } = data;
+
+    const results = await pool.query(`
+        SELECT * FROM employee
+        WHERE warehouse_id = ${warehouse_id}
+        `);
+
+    return results.rows;
+};
+
+/**
  * Transfer employee to another warehouse
  * @param {Object} data
  * @param {Number} data.employeeID - Employee ID
@@ -42,35 +84,56 @@ const deleteEmployee = async (employeeID) => {
  * @returns {any}
  */
 const changeWarehouse = async (data) => {
-    const { employeeID, warehouseID } = data;
+    const { employee_id, warehouse_id } = data;
 
     await pool.query(
         `
         UPDATE employee
-        SET warehouse_id = ${warehouseID}
-        WHERE id = ${employeeID}
+        SET warehouse_id = ${warehouse_id}
+        WHERE id = ${employee_id}
         `
     );
 };
 
 /**
- * Update salary
+ * Update salary of an employee
  * @param {number} employeeID - ID of the person
  * @param {number} salary - The new salary
  */
-const updateSalary = async (employeeID, salary) => {
+const updateSalary = async (data) => {
+    const { employee_id, salary } = data;
     await pool.query(
         `
         UPDATE employee
         SET salary = ${salary}
-        WHERE id = ${employeeID}
+        WHERE id = ${employee_id}
         `
     );
+};
+
+/**
+ * Get salary of an employee
+ * @param {any} id
+ * @returns {any}
+ */
+const getSalary = async (id) => {
+    const results = await pool.query(`
+        SELECT * FROM employee
+        WHERE id = ${id}
+        `);
+
+    return results.rows[0].salary;
 };
 
 module.exports = {
     insert,
     delete: deleteEmployee,
     changeWarehouse,
-    updateSalary,
+    salary: {
+        get: getSalary,
+        update: updateSalary,
+    },
+    getAllEmployees,
+    getEmployeeByID,
+    getWarehouseEmployees,
 };
