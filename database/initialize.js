@@ -23,9 +23,16 @@ const schemaOrder = [
  * @returns {Boolean}
  */
 const isSchemaCreated = async () => {
-    const rows = await getAll('warehouse');
+    let rows;
 
-    return rows.length === 0 ? false : true;
+    try {
+        rows = await getAll('warehouse');
+        console.log('🚀 ~ isSchemaCreated ~ rows:', rows);
+    } catch (err) {
+        console.error(err);
+    }
+
+    return !rows || rows.length === 0 ? false : true;
 };
 
 /**
@@ -33,7 +40,9 @@ const isSchemaCreated = async () => {
  * @returns {any}
  */
 const initialize = async () => {
-    if (!(await isSchemaCreated())) {
+    const boolean = await isSchemaCreated();
+
+    if (!boolean) {
         console.info('[DB] - Creating Schema...');
         try {
             for (const schema of schemaOrder) {
@@ -52,6 +61,11 @@ const initialize = async () => {
         }
 
         console.info('[DB] - Done.');
+
+        return {
+            success: true,
+            boolean,
+        };
     }
 };
 

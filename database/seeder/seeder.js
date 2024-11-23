@@ -30,8 +30,15 @@ const getAll = async (tableName) => {
  * @returns {Boolean}
  */
 const isDBSeeded = async () => {
-    const rows = await getAll('warehouse');
-    return rows.length === 0 ? false : true;
+    let rows;
+
+    try {
+        rows = await getAll('warehouse');
+    } catch (err) {
+        console.error(err);
+    }
+
+    return !rows || rows.length === 0 ? false : true;
 };
 
 /**
