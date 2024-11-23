@@ -18,11 +18,14 @@ module.exports = {
     delete: async (req, res, next) => {
         try {
             const { employee_id } = req.params;
-            const result = await employee.delete(employee_id);
+            const result = await employee.delete({
+                id: employee_id,
+                tableName: employee.tableName,
+            });
 
             let json;
 
-            if (result.rowCount === 1) {
+            if (result) {
                 json = {
                     success: true,
                     message: 'Employee has been deleted.',
@@ -35,6 +38,32 @@ module.exports = {
             }
 
             res.json(json);
+        } catch (err) {
+            next(err);
+        }
+    },
+    update: async (req, res, next) => {
+        try {
+            const { employee_id } = req.params;
+            const payload = req.body;
+
+            const result = await employee.update({
+                tableName: 'employee',
+                id: employee_id,
+                payload,
+            });
+
+            if (result) {
+                res.json({
+                    success: true,
+                    message: 'Employee data has been updated.',
+                });
+            } else {
+                res.json({
+                    success: false,
+                    message: 'Something went wrong.',
+                });
+            }
         } catch (err) {
             next(err);
         }
@@ -67,61 +96,11 @@ module.exports = {
     getWarehouseEmployees: async (req, res, next) => {
         try {
             const { warehouse_id } = req.params;
-            console.log(
-                '🚀 ~ getWarehouseEmployees: ~ warehouse_id:',
-                warehouse_id
-            );
-
-            const results = await employee.getWarehouseEmployees({
-                warehouse_id,
-            });
+            const results = await employee.getEmployeeByWarehouse(warehouse_id);
 
             res.json({
                 success: true,
                 employees: results,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
-    updateWarehouse: async (req, res, next) => {
-        try {
-            const { employee_id } = req.params;
-            const { warehouse_id } = req.body;
-            await employee.changeWarehouse({ employee_id, warehouse_id });
-
-            res.json({
-                success: true,
-                message: 'Employee has been transfered to another warehouse.',
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
-    getSalary: async (req, res, next) => {
-        try {
-            const { employee_id } = req.params;
-            const salary = await employee.salary.get(employee_id);
-
-            res.json({
-                success: true,
-                employee_id,
-                salary,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
-    updateSalary: async (req, res, next) => {
-        try {
-            const { employee_id } = req.params;
-            const { salary } = req.body;
-
-            await employee.salary.update({ employee_id, salary });
-
-            res.json({
-                success: true,
-                message: 'Salary of employee has been updated.',
             });
         } catch (err) {
             next(err);

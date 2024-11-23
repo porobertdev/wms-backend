@@ -1,5 +1,7 @@
 const pool = require('../pool');
 
+const tableName = 'employee';
+
 /**
  * Add an employee
  * @param {Object} data
@@ -25,13 +27,36 @@ const insert = async (data) => {
  * Delete an employee
  * @param {number} employeeID - ID of the employee
  */
-const deleteEmployee = async (employeeID) => {
-    await pool.query(
-        `
-        DELETE FROM employee
-        WHERE id = ${employeeID}
-        `
-    );
+const deleteEmployee = async (data) => {
+    const { tableName, id } = data;
+    const query = `
+        DELETE FROM ${tableName}
+        WHERE id = ${id}
+        `;
+    const result = await pool.query(query);
+
+    return result.rowCount === 1 ? true : false;
+};
+
+/**
+ * Update any table fields dynamically
+ * @param {Object} data
+ * @param {String} data.tableName - Table name
+ * @param {Object} data.payload - Payload containing key-value pairs for column-rows
+ * @returns {Boolean} - True/false based on updating success
+ */
+const update = async (data) => {
+    const { tableName, id, payload } = data;
+    const query = `
+        UPDATE ${tableName}
+        SET ${Object.keys(payload)
+            .map((key) => `${key} = ${payload[key]}`)
+            .join(', ')}
+        WHERE id = ${id}
+        `;
+    const result = await pool.query(query);
+
+    return result.rowCount === 1 ? true : false;
 };
 
 /**
@@ -65,9 +90,7 @@ const getEmployeeByID = async (id) => {
  * @param {Number} data.warehouse_id - Warehouse ID
  * @returns {Array}
  */
-const getWarehouseEmployees = async (data) => {
-    const { warehouse_id } = data;
-
+const getEmployeeByWarehouse = async (warehouse_id) => {
     const results = await pool.query(`
         SELECT * FROM employee
         WHERE warehouse_id = ${warehouse_id}
@@ -76,64 +99,12 @@ const getWarehouseEmployees = async (data) => {
     return results.rows;
 };
 
-/**
- * Transfer employee to another warehouse
- * @param {Object} data
- * @param {Number} data.employeeID - Employee ID
- * @param {Number} data.warehouseID - Warehouse ID
- * @returns {any}
- */
-const changeWarehouse = async (data) => {
-    const { employee_id, warehouse_id } = data;
-
-    await pool.query(
-        `
-        UPDATE employee
-        SET warehouse_id = ${warehouse_id}
-        WHERE id = ${employee_id}
-        `
-    );
-};
-
-/**
- * Update salary of an employee
- * @param {number} employeeID - ID of the person
- * @param {number} salary - The new salary
- */
-const updateSalary = async (data) => {
-    const { employee_id, salary } = data;
-    await pool.query(
-        `
-        UPDATE employee
-        SET salary = ${salary}
-        WHERE id = ${employee_id}
-        `
-    );
-};
-
-/**
- * Get salary of an employee
- * @param {any} id
- * @returns {any}
- */
-const getSalary = async (id) => {
-    const results = await pool.query(`
-        SELECT * FROM employee
-        WHERE id = ${id}
-        `);
-
-    return results.rows[0].salary;
-};
-
 module.exports = {
+    tableName,
     insert,
     delete: deleteEmployee,
-    changeWarehouse,
-    salary: {
-        get: getSalary,
-        update: updateSalary,
-    },
+    update,
     getAllEmployees,
     getEmployeeByID,
-    getWarehouseEmployees,
+    getEmployeeByWarehouse,
 };
