@@ -1,6 +1,19 @@
 const pool = require('../pool');
 
 /**
+ * Get a list of all employees
+ * @returns {Array}
+ */
+const getCustomerByID = async (id) => {
+    const results = await pool.query(`
+        SELECT * FROM customer
+        WHERE id = ${id}
+        `);
+
+    return results.rows[0];
+};
+
+/**
  * Add a new customer
  * @param {Object} data
  * @param {String} data.type - Customer Type: business: pfa/srl, private
@@ -21,18 +34,21 @@ const insertCustomer = async (data) => {
 
 /**
  * Delete a customer
- * @param {number} personID - person's ID from 'persons' table
+ * @param {number} customerID - Customer ID
  */
-const deleteCustomer = async (personID) => {
-    await pool.query(
+const deleteCustomer = async (customerID) => {
+    const result = await pool.query(
         `
         DELETE FROM customer
-        WHERE person_id = ${personID}
+        WHERE id = ${customerID}
         `
     );
+
+    return result.rowCount === 1 ? true : false;
 };
 
 module.exports = {
+    get: getCustomerByID,
     insert: insertCustomer,
     delete: deleteCustomer,
 };
