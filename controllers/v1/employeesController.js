@@ -1,4 +1,5 @@
 const { employee } = require('../../database/db');
+
 module.exports = {
     add: async (req, res, next) => {
         try {

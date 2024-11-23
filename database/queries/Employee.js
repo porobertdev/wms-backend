@@ -1,5 +1,5 @@
+const { insert, update, deleteRow } = require('../db');
 const pool = require('../pool');
-
 const tableName = 'employee';
 
 /**
@@ -21,42 +21,6 @@ const insert = async (data) => {
         `,
         [person_id, warehouse_id, role_id, salary]
     );
-};
-
-/**
- * Delete an employee
- * @param {number} employeeID - ID of the employee
- */
-const deleteEmployee = async (data) => {
-    const { tableName, id } = data;
-    const query = `
-        DELETE FROM ${tableName}
-        WHERE id = ${id}
-        `;
-    const result = await pool.query(query);
-
-    return result.rowCount === 1 ? true : false;
-};
-
-/**
- * Update any table fields dynamically
- * @param {Object} data
- * @param {String} data.tableName - Table name
- * @param {Object} data.payload - Payload containing key-value pairs for column-rows
- * @returns {Boolean} - True/false based on updating success
- */
-const update = async (data) => {
-    const { tableName, id, payload } = data;
-    const query = `
-        UPDATE ${tableName}
-        SET ${Object.keys(payload)
-            .map((key) => `${key} = ${payload[key]}`)
-            .join(', ')}
-        WHERE id = ${id}
-        `;
-    const result = await pool.query(query);
-
-    return result.rowCount === 1 ? true : false;
 };
 
 /**
@@ -102,8 +66,8 @@ const getEmployeeByWarehouse = async (warehouse_id) => {
 module.exports = {
     tableName,
     insert,
-    delete: deleteEmployee,
     update,
+    delete: deleteRow,
     getAllEmployees,
     getEmployeeByID,
     getEmployeeByWarehouse,

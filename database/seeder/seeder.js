@@ -1,16 +1,6 @@
 const pool = require('../pool');
 const { tables } = require('../data');
-
-const insert = async (tableName, columns, values) => {
-    const query = `
-        INSERT INTO ${tableName}
-        (${columns.join(', ')})
-        VALUES (${values.map((v, index) => '$' + (index + 1)).join(', ')})
-        `;
-    // console.log('🚀 ~ insert ~ query:', query);
-
-    await pool.query(query, values);
-};
+const db = require('../db');
 
 /**
  * Get all columns and rows of a table
@@ -46,12 +36,9 @@ const seed = async () => {
             const name = table.name;
 
             for (const item of table.data) {
-                const columns = Object.keys(item);
-                const values = Object.values(item);
-
                 try {
                     await pool.query('BEGIN');
-                    await insert(name, columns, values);
+                    await db.insert({ tableName: name, payload: item });
                     await pool.query('COMMIT');
                 } catch (err) {
                     console.log(name);
