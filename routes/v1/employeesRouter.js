@@ -17,16 +17,13 @@ any field in the table with one endpoint.
 That is easier to maintain since we need
 less endpoints and SQL queries.
 */
-employeesRouter.get('/', employeesController.getAllEmployees);
+employeesRouter.get('/', employeesController.getAll);
 employeesRouter.post('/', employeesController.add);
 // :employee_id
-employeesRouter.get('/:employee_id', employeesController.getEmployeeByID);
-employeesRouter.put('/:employee_id', employeesController.update);
-employeesRouter.delete('/:employee_id', employeesController.delete);
+employeesRouter.get('/:id', employeesController.get);
+employeesRouter.put('/:id', employeesController.update);
+employeesRouter.delete('/:id', employeesController.delete);
 // warehouse
-employeesRouter.get(
-    '/warehouse/:warehouse_id',
-    employeesController.getWarehouseEmployees
-);
+employeesRouter.get('/warehouse/:id', employeesController.get);
 
 module.exports = employeesRouter;

@@ -1,6 +1,6 @@
 const { faker } = require('@faker-js/faker');
 const { unique } = require('@dpaskhin/unique');
-const { generateUsername } = require('./queries/User');
+const generateUsername = require('../utils/generateUsername');
 const {
     NUM_WAREHOUSES,
     NUM_BIN_LOCATIONS,
@@ -22,25 +22,6 @@ const {
     NUM_DELIVERY_ROUTES,
     BIN_LOCATION_CODES,
 } = require('./seeder/constants');
-const pool = require('./pool');
-
-const getAllRows = async (tableName) => {
-    try {
-        const users = await pool.query(`SELECT * FROM ${tableName}`);
-
-        return users.rows;
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-const table = (name, columns, howMany) => {
-    return {
-        name,
-        columns,
-        howMany,
-    };
-};
 
 const warehouse = {
     name: 'warehouse',

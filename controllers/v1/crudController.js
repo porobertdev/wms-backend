@@ -1,0 +1,85 @@
+const { crud } = require('../../database/db');
+
+const create = (tableName) => async (req, res, next) => {
+    try {
+        const results = await crud.insert(tableName, [req.body]);
+
+        res.status(201).json({ results });
+    } catch (err) {
+        next(err);
+    }
+};
+
+const get = (tableName) => async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const results = await crud.get(tableName, { id });
+
+        res.status(200).json(results);
+    } catch (err) {
+        next(err);
+    }
+};
+
+const getAll = (tableName) => async (req, res, next) => {
+    try {
+        const results = await crud.getAll(tableName);
+
+        if (!results.length) {
+            res.status(404).json({
+                error: `Record not found in ${tableName}.`,
+            });
+        } else {
+            res.status(200).json(results);
+        }
+    } catch (err) {
+        next(err);
+    }
+};
+
+const update = (tableName) => async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+        const results = await crud.update(tableName, {
+            data,
+            where: { id },
+        });
+
+        if (!results.length) {
+            res.status(404).json({
+                error: `Record not found in ${tableName}.`,
+            });
+        } else {
+            res.status(200).json({
+                message: `Record in ${tableName} updated successfully.`,
+                results,
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+};
+
+const del = (tableName) => async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        // TODO: support deleting based on any column
+        const results = await crud.delete(tableName, { id });
+
+        if (!results.length) {
+            res.status(404).json({
+                error: `Record not found in ${tableName}.`,
+            });
+        } else {
+            res.status(200).json({
+                message: `Record in ${tableName} deleted successfully.`,
+                results,
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { create, get, getAll, update, delete: del };

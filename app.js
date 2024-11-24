@@ -7,11 +7,7 @@ const db = require('./database/db');
 loadEnvConfig();
 
 // db
-db.init.initialize();
-
-if (process.env.NODE_ENV === 'dev') {
-    db.seeder.seed();
-}
+db.init();
 
 const PORT = process.env.PORT || 3000;
 const app = express();

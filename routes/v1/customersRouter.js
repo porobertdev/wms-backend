@@ -3,8 +3,9 @@ const customersController = require('../../controllers/v1/customersController');
 
 const customersRouter = Router();
 
-customersRouter.post('/', customersController.create);
-customersRouter.get('/:customer_id', customersController.get);
-customersRouter.delete('/:customer_id', customersController.delete);
+customersRouter.post('/', customersController.add);
+customersRouter.get('/:id', customersController.get);
+customersRouter.put('/:id', customersController.update);
+customersRouter.delete('/:id', customersController.delete);
 
 module.exports = customersRouter;

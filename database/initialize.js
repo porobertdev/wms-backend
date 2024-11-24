@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const pool = require('./pool');
-const { getAll } = require('./seeder/seeder');
+const knex = require('./pool');
+const crud = require('./queries/crud');
 
 // we need to create them in order to avoid Primary-Foreign keys conflicts
 const schemaOrder = [
@@ -26,7 +26,7 @@ const isSchemaCreated = async () => {
     let rows;
 
     try {
-        rows = await getAll('warehouse');
+        rows = await crud.getAll('warehouse');
         console.log('🚀 ~ isSchemaCreated ~ rows:', rows);
     } catch (err) {
         console.error(err);
@@ -43,7 +43,7 @@ const initialize = async () => {
     const boolean = await isSchemaCreated();
 
     if (!boolean) {
-        console.info('[DB] - Creating Schema...');
+        console.info('[DB-INIT] - Creating Schema...');
         try {
             for (const schema of schemaOrder) {
                 console.log('🚀 ~ initDb ~ s:', schema);
@@ -54,13 +54,13 @@ const initialize = async () => {
                     `${schema}.sql`
                 );
                 const sql = fs.readFileSync(filePath, 'utf8');
-                await pool.query(sql);
+                await knex.raw(sql);
             }
         } catch (err) {
             console.error('Error creating db schema', err);
         }
 
-        console.info('[DB] - Done.');
+        console.info('[DB-INIT] - Done.');
 
         return {
             success: true,
@@ -70,4 +70,4 @@ const initialize = async () => {
 };
 
 // initialize();
-module.exports = { initialize };
+module.exports = initialize;

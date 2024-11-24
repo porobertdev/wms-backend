@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS inventory_transaction(
     quantity_change INT,
     transaction_type VARCHAR(50) NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INT REFERENCES users(id) ON DELETE SET NULL NOT NULL
+    user_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_transaction(

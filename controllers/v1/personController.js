@@ -1,65 +1,10 @@
-const { person } = require('../../database/db');
+const crudController = require('./crudController');
+const tableName = 'person';
 
 module.exports = {
-    createPerson: async (req, res, next) => {
-        try {
-            const { fname, lname, birth_date, address, city, phone_number } =
-                req.body;
-            await person.insert({
-                fname,
-                lname,
-                birth_date,
-                address,
-                city,
-                phone_number,
-            });
-
-            res.json({
-                success: true,
-                payload: req.body,
-                message: 'The person has been created.',
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
-    getPerson: async (req, res, next) => {
-        try {
-            const { user_id } = req.params;
-            const user = await person.get(user_id);
-
-            if (user.rowCount === 1) {
-                res.json(user.rows);
-            } else {
-                res.json({
-                    message: "Person doesn't exist",
-                });
-            }
-        } catch (err) {
-            next(err);
-        }
-    },
-    deletePerson: async (req, res, next) => {
-        try {
-            const { user_id } = req.params;
-            const result = await person.delete(user_id);
-            let json;
-
-            if (result) {
-                json = {
-                    success: true,
-                    message: 'Person has been deleted.',
-                };
-            } else {
-                json = {
-                    success: false,
-                    message: "Person doesn't exist",
-                };
-            }
-
-            res.json(json);
-        } catch (err) {
-            next(err);
-        }
-    },
+    add: crudController.create(tableName),
+    get: crudController.get(tableName),
+    getAll: crudController.getAll(tableName),
+    update: crudController.update(tableName),
+    delete: crudController.delete(tableName),
 };

@@ -3,8 +3,11 @@ const personController = require('../../controllers/v1/personController');
 
 const personRouter = Router();
 
-personRouter.post('/', personController.createPerson);
-personRouter.get('/:user_id', personController.getPerson);
-personRouter.delete('/:user_id', personController.deletePerson);
+personRouter.get('/', personController.getAll);
+personRouter.post('/', personController.add);
+personRouter.delete('/', personController.delete);
+personRouter.get('/:id', personController.get);
+personRouter.put('/:id', personController.update);
+personRouter.delete('/:id', personController.delete);
 
 module.exports = personRouter;

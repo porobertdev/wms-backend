@@ -1,29 +1,5 @@
-const pool = require('../pool');
 const { tables } = require('../data');
-
-const insert = async (tableName, columns, values) => {
-    const query = `
-        INSERT INTO ${tableName}
-        (${columns.join(', ')})
-        VALUES (${values.map((v, index) => '$' + (index + 1)).join(', ')})
-        `;
-    // console.log('🚀 ~ insert ~ query:', query);
-
-    await pool.query(query, values);
-};
-
-/**
- * Get all columns and rows of a table
- * @param {String} tableName
- * @returns {Array}
- */
-const getAll = async (tableName) => {
-    const query = `SELECT * FROM ${tableName}`;
-    const results = await pool.query(query);
-    const rows = results.rows;
-
-    return rows;
-};
+const crud = require('../queries/crud');
 
 /**
  * Check if DB is seeded
@@ -33,7 +9,7 @@ const isDBSeeded = async () => {
     let rows;
 
     try {
-        rows = await getAll('warehouse');
+        rows = await crud.getAll('warehouse');
     } catch (err) {
         console.error(err);
     }
@@ -47,29 +23,29 @@ const isDBSeeded = async () => {
 const seed = async () => {
     // seed only if it wasn't done already
     if (!(await isDBSeeded())) {
-        console.info('[SEEDER] - Starting...');
+        console.info('[DB-SEEDER] - Starting...');
 
         for (const table of tables) {
-            const name = table.name;
+            /*
+            even though crud.insert supports an array
+            of objects to insert with one query, not all
+            of that data will be inserted since there are
+            conflicts caused by fakerjs which generates
+            duplicated data, or I'm missing something.
 
+            TODO: find a solution someday
+            */
             for (const item of table.data) {
-                const columns = Object.keys(item);
-                const values = Object.values(item);
-
                 try {
-                    await pool.query('BEGIN');
-                    await insert(name, columns, values);
-                    await pool.query('COMMIT');
+                    await crud.insert(table.name, [item]);
                 } catch (err) {
-                    console.log(name);
                     console.log(err.detail);
-                    await pool.query('ROLLBACK');
                 }
             }
         }
 
-        console.info('[SEEDER] - Done.');
+        console.info('[DB-SEEDER] - Done.');
     }
 };
 
-module.exports = { seed, getAll };
+module.exports = { seed };
