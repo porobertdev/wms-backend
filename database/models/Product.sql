@@ -20,6 +20,6 @@ CREATE TABLE IF NOT EXISTS product(
     height DEC,
     weight DEC,
     price DEC,
-    category_id INT REFERENCES product_category(id) ON DELETE SET NULL NOT NULL,
+    category_id INT REFERENCES product_category(id) ON DELETE SET NULL,
     manufacturer_id INT REFERENCES product_manufacturer(id) ON DELETE CASCADE NOT NULL
 );

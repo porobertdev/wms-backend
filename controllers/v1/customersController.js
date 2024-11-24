@@ -38,12 +38,12 @@ module.exports = {
             if (result) {
                 json = {
                     success: true,
-                    message: 'User has been deleted.',
+                    message: 'Customer has been deleted.',
                 };
             } else {
                 json = {
                     success: false,
-                    message: "User doesn't exist",
+                    message: "Customer doesn't exist",
                 };
             }
 

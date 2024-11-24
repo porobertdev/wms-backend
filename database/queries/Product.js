@@ -1,13 +1,24 @@
 const pool = require('../pool');
 
 /**
- * Add a new category
- * @param {Object} data
- * @param {String} data.name - name
+ * Get category name
+ * @param {Number} id - Category ID
  */
-const insertCategory = async (data) => {
-    const { name } = data;
+const getCategory = async (id) => {
+    const results = await pool.query(
+        `
+        SELECT * FROM product_category
+        WHERE id = ${id}
+        `
+    );
+    return results.rows[0];
+};
 
+/**
+ * Add a new category
+ * @param {String} name - name
+ */
+const insertCategory = async (name) => {
     await pool.query(
         `
         INSERT INTO product_category(name)
@@ -19,38 +30,54 @@ const insertCategory = async (data) => {
 
 /**
  * Delete a product category
- * @param {string} name - category name
+ * @param {Number} id - Category ID
  */
-const deleteCategory = async (name) => {
-    await pool.query(
+const deleteCategory = async (id) => {
+    const result = await pool.query(
         `
         DELETE FROM product_category
-        WHERE name = ${name}
+        WHERE id = ${id}
         `
     );
+
+    return result.rowCount === 1 ? true : false;
 };
 
 /**
  * Update name of a product category
  * @param {string} name - category name
+ * @param {Number} id - Category ID
  */
-const updateCategory = async (name) => {
+const updateCategory = async (name, id) => {
     await pool.query(
         `
         UPDATE product_category
-        SET name = ${name}
+        SET name = '${name}'
+        WHERE id = ${id}
         `
     );
 };
 
 /**
- * Add a new manufacturer
- * @param {Object} data
- * @param {String} data.name - name
+ * Get Manufacturer name
+ * @param {Number} id - Manufacturer ID
  */
-const insertManufacturer = async (data) => {
-    const { name } = data;
+const getManufacturer = async (id) => {
+    const results = await pool.query(
+        `
+        SELECT * FROM product_manufacturer
+        WHERE id = ${id}
+        `
+    );
 
+    return results.rows[0];
+};
+
+/**
+ * Add a new manufacturer
+ * @param {String} name - name
+ */
+const insertManufacturer = async (name) => {
     await pool.query(
         `
         INSERT INTO product_manufacturer(name)
@@ -61,27 +88,31 @@ const insertManufacturer = async (data) => {
 };
 
 /**
- * Delete a product category
- * @param {string} name - category name
+ * Delete a product manufacturer
+ * @param {Number} id - category ID
  */
-const deleteManufacturer = async (name) => {
-    await pool.query(
+const deleteManufacturer = async (id) => {
+    const result = await pool.query(
         `
         DELETE FROM product_manufacturer
-        WHERE name = ${name}
+        WHERE id = ${id}
         `
     );
+
+    return result.rowCount === 1 ? true : false;
 };
 
 /**
  * Update name of a product manufacturer
- * @param {string} name - manufacturer name
+ * @param {string} name - name
+ * @param {Number} id - Category ID
  */
-const updateManufacturer = async (name) => {
+const updateManufacturer = async (name, id) => {
     await pool.query(
         `
         UPDATE product_manufacturer
-        SET name = ${name}
+        SET name = '${name}'
+        WHERE id = ${id}
         `
     );
 };
@@ -137,44 +168,69 @@ const insertProduct = async (data) => {
 
 /**
  * Delete a product
- * @param {string} name - category name
+ * @param {string} id - Product ID
  */
-const deleteProduct = async (name) => {
-    await pool.query(
+const deleteProduct = async (id) => {
+    const result = await pool.query(
         `
         DELETE FROM product
-        WHERE name = ${name}
+        WHERE id = ${id}
         `
     );
+    return result.rowCount === 1 ? true : false;
 };
 
 /**
- * Get SKU/barcode of a product to print a new label
+ * Get all info of a product by ID
  * @param {number} productID - product ID
  */
-const getSKU = async (productID) => {
+const getProductByID = async (productID) => {
     const results = await pool.query(
         `
-        SELECT sku FROM product
-        WHERE product_id = ${productID}
+        SELECT * FROM product
+        WHERE id = ${productID}
         `
     );
 
     return results.rows[0];
 };
 
+/**
+ * Update any table fields dynamically
+ * @param {Object} data
+ * @param {String} data.tableName - Table name
+ * @param {Object} data.payload - Payload containing key-value pairs for column-rows
+ * @returns {Boolean} - True/false based on updating success
+ */
+const update = async (data) => {
+    const { tableName, id, payload } = data;
+    const query = `
+        UPDATE ${tableName}
+        SET ${Object.keys(payload)
+            .map((key) => `${key} = '${payload[key]}'`)
+            .join(', ')}
+        WHERE id = ${id}
+        `;
+    const result = await pool.query(query);
+
+    return result.rowCount === 1 ? true : false;
+};
+
 module.exports = {
     category: {
+        get: getCategory,
         insert: insertCategory,
         delete: deleteCategory,
         update: updateCategory,
     },
     manufacturer: {
+        get: getManufacturer,
         insert: insertManufacturer,
         delete: deleteManufacturer,
         update: updateManufacturer,
     },
     insert: insertProduct,
     delete: deleteProduct,
-    getSKU,
+    get: getProductByID,
+    update,
 };
