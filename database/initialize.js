@@ -27,7 +27,6 @@ const isSchemaCreated = async () => {
 
     try {
         rows = await crud.getAll('warehouse');
-        console.log('🚀 ~ isSchemaCreated ~ rows:', rows);
     } catch (err) {
         console.error(err);
     }
@@ -67,6 +66,8 @@ const initialize = async () => {
             boolean,
         };
     }
+
+    console.info('[DB-INIT] - Schema exists.');
 };
 
 // initialize();
