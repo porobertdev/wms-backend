@@ -7,6 +7,7 @@ const employeesRouter = require('./employeesRouter');
 const usersRouter = require('./usersRouter');
 const customersRouter = require('./customersRouter');
 const productsRouter = require('./productsRouter');
+const inventoryRouter = require('./inventoryRouter');
 
 const rootRouter = Router();
 
@@ -18,5 +19,6 @@ rootRouter.use('/employees', employeesRouter);
 rootRouter.use('/users', usersRouter);
 rootRouter.use('/customers', customersRouter);
 rootRouter.use('/products', productsRouter);
+rootRouter.use('/inventory', inventoryRouter);
 
 module.exports = { rootRouter };
