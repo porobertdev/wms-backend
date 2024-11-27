@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS delivery_route(
 
 CREATE TABLE IF NOT EXISTS route_package(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    route_id INT REFERENCES delivery_route(id) NOT NULL,
-    package_id INT REFERENCES order_package(id) NOT NULL
+    route_id INT REFERENCES delivery_route(id) ON DELETE CASCADE NOT NULL,
+    package_id ON DELETE CASCADE INT REFERENCES order_package(id) NOT NULL
 );
 
 -- CREATE TABLE IF NOT EXISTS route_hour(
