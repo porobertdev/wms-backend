@@ -8,7 +8,7 @@ const {
 const orderRouter = Router();
 
 // customer_order
-orderRouter.get('/', orderItemController.getAll);
+orderRouter.get('/', orderController.getAll);
 orderRouter.post('/', orderController.add);
 orderRouter.put('/:id', orderController.update);
 orderRouter.get('/:id', orderController.get);

@@ -9,6 +9,7 @@ const customersRouter = require('./customersRouter');
 const productsRouter = require('./productsRouter');
 const inventoryRouter = require('./inventoryRouter');
 const orderRouter = require('./orderRouter');
+const carRouter = require('./carRouter');
 
 const rootRouter = Router();
 
@@ -22,5 +23,6 @@ rootRouter.use('/customers', customersRouter);
 rootRouter.use('/products', productsRouter);
 rootRouter.use('/inventory', inventoryRouter);
 rootRouter.use('/orders', orderRouter);
+rootRouter.use('/cars', carRouter);
 
 module.exports = { rootRouter };
