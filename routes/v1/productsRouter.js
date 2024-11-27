@@ -1,5 +1,9 @@
 const { Router } = require('express');
-const productsController = require('../../controllers/v1/productsController');
+const {
+    productsController,
+    categoryController,
+    manufacturerController,
+} = require('../../controllers/v1/productsController');
 
 const productsRouter = Router();
 
@@ -10,18 +14,15 @@ productsRouter.get('/:id', productsController.get);
 productsRouter.delete('/:id', productsController.delete);
 
 // categories
-productsRouter.post('/category', productsController.category.add);
-productsRouter.get('/category/:id', productsController.category.get);
-productsRouter.delete('/category/:id', productsController.category.delete);
-productsRouter.put('/category/:id', productsController.category.update);
+productsRouter.post('/category', categoryController.add);
+productsRouter.get('/category/:id', categoryController.get);
+productsRouter.delete('/category/:id', categoryController.delete);
+productsRouter.put('/category/:id', categoryController.update);
 
 // manufacturers
-productsRouter.post('/manufacturers', productsController.manufacturer.add);
-productsRouter.get('/manufacturers/:id', productsController.manufacturer.get);
-productsRouter.delete(
-    '/manufacturers/:id',
-    productsController.manufacturer.delete
-);
-productsRouter.put('/manufacturers/:id', productsController.update);
+productsRouter.post('/manufacturers', manufacturerController.add);
+productsRouter.get('/manufacturers/:id', manufacturerController.get);
+productsRouter.delete('/manufacturers/:id', manufacturerController.delete);
+productsRouter.put('/manufacturers/:id', manufacturerController.update);
 
 module.exports = productsRouter;

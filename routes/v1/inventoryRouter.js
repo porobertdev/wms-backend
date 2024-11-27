@@ -1,5 +1,8 @@
 const { Router } = require('express');
-const inventoryController = require('../../controllers/v1/inventoryController');
+const {
+    inventoryController,
+    inventoryTransactionsController,
+} = require('../../controllers/v1/inventoryController');
 
 const inventoryRouter = Router();
 
@@ -11,10 +14,16 @@ inventoryRouter.put('/product/:id', inventoryController.update);
 inventoryRouter.delete('/product/:id', inventoryController.delete);
 
 // transaction
-inventoryRouter.get('/transactions', inventoryController.getAll);
-inventoryRouter.post('/transactions', inventoryController.add);
-inventoryRouter.get('/transactions/:id', inventoryController.get);
-inventoryRouter.put('/transactions/:id', inventoryController.update);
-inventoryRouter.delete('/transactions/:id', inventoryController.delete);
+inventoryRouter.get('/transactions', inventoryTransactionsController.getAll);
+inventoryRouter.post('/transactions', inventoryTransactionsController.add);
+inventoryRouter.get('/transactions/:id', inventoryTransactionsController.get);
+inventoryRouter.put(
+    '/transactions/:id',
+    inventoryTransactionsController.update
+);
+inventoryRouter.delete(
+    '/transactions/:id',
+    inventoryTransactionsController.delete
+);
 
 module.exports = inventoryRouter;
