@@ -73,4 +73,4 @@ const del = async (tableName, where) => {
     return results;
 };
 
-module.exports = { get, getAll, insert, update, delete: del };
+module.exports = { get, getAll, add: insert, update, delete: del };

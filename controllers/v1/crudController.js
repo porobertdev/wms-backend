@@ -10,7 +10,7 @@ module.exports = (tableName) => {
         tableName,
         add: async (req, res, next) => {
             try {
-                const results = await crud.insert(tableName, [req.body]);
+                const results = await crud.add(tableName, [req.body]);
 
                 res.status(201).json({ results });
             } catch (err) {

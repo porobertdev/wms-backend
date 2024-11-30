@@ -1,7 +1,7 @@
 module.exports = {
     handleError: (err, req, res, next) => {
-        console.log(err);
+        console.log(`Error: ${err.message}`);
 
-        res.status(err.statusCode).send({ error: err.message });
-    }
-}
+        res.status(err.statusCode || 401).send({ error: err.message });
+    },
+};
