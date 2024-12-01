@@ -11,6 +11,7 @@ module.exports = (tableName) => {
         add: async (req, res, next) => {
             try {
                 const results = await crud.add(tableName, [req.body]);
+                console.log('🚀 ~ add: ~ results:', results);
 
                 res.status(201).json({ results });
             } catch (err) {

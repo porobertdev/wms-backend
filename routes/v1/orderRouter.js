@@ -15,7 +15,8 @@ orderRouter.get('/:id', orderController.get);
 orderRouter.delete('/:id', orderController.delete);
 
 // order item
-orderRouter.get('/:id/items', orderItemController.get);
+orderRouter.post('/:id/items', orderItemController.addOrderItems);
+orderRouter.get('/:id/items', orderItemController.getOrderItems);
 
 // order_package
 orderRouter.get('/:id/packages', orderPackageController.getAll);
