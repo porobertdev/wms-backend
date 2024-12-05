@@ -16,6 +16,7 @@ const schemaOrder = [
     'Order',
     'Car',
     'Driver',
+    'Queue',
 ];
 
 /**

@@ -45,7 +45,7 @@ const insert = async (tableName, data) => {
 /**
  * UPDATE one or more key-value pairs (column-row value)
  * @param {String} tableName - table name
- * @param {Array} data - array of objects
+ * @param {Array} data - key-value pairs
  * @param {Object} where - key-value pairs for conditions
  * @returns {Array} - all values that were updated
  */

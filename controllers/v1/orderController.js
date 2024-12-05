@@ -1,5 +1,6 @@
 const { crud } = require('../../database/db');
 const knex = require('../../database/pool');
+const queueService = require('../../services/v1/queueService');
 const crudController = require('./crudController');
 
 const orderController = crudController('customer_order');
@@ -29,6 +30,9 @@ const addOrderItems = async (req, res, next) => {
 
     try {
         const results = await crud.add('order_item', mockCartItems);
+
+        // add order into the queue
+        await queueService.addTask('order', mockCartItems[0]);
 
         res.status(201).json({
             message: 'Products added to order_items',

@@ -2,8 +2,11 @@ const express = require('express');
 const loadEnvConfig = require('./utils/loadEnv');
 const { rootRouter: v1RootRouter } = require('./routes/v1/rootRouter');
 const db = require('./database/db');
-
 const { handleError } = require('./middleware/handleError');
+
+// TODO: find a way to require it properly from queue-related modules.
+// Keep in mind that queueService must be available when the queue event is emitted.
+require('./workers/v1/queueWorker');
 
 // load env vars
 loadEnvConfig();
