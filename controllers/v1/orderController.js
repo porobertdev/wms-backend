@@ -1,7 +1,7 @@
 const { crud } = require('../../database/db');
-const knex = require('../../database/pool');
-const queueService = require('../../services/v1/queueService');
 const crudController = require('./crudController');
+const queueService = require('../../services/v1/queueService');
+const orderService = require('../../services/v1/orders/orderService');
 
 const orderController = crudController('customer_order');
 const orderItemController = crudController('order_item');
@@ -47,33 +47,7 @@ const addOrderItems = async (req, res, next) => {
 const getOrderItems = async (req, res, next) => {
     try {
         const { id } = req.params;
-        // const results = await crud.get('order_item', { order_id: id });
-
-        /*SQL QUERY
-
-        SELECT order_item.product_id, product.name, product.sku, pi.location_id, pi.quantity, bl.location_code FROM order_item INNER JOIN product ON order_item.product_id = product.id AND order_item.order_id = 3345 INNER JOIN product_inventory AS pi ON pi.product_id = product.id INNER JOIN bin_location AS bl ON bl.id = pi.location_id;
-        */
-
-        // Get all product info required for creating Picking Lists
-        const results = await knex('order_item')
-            .innerJoin('product', function () {
-                this.on('order_item.product_id', '=', 'product.id').andOn(
-                    'order_item.order_id',
-                    '=',
-                    knex.raw('?', [id])
-                );
-            })
-            .innerJoin('product_inventory as pi', 'pi.product_id', 'product.id')
-            .innerJoin('bin_location as bl', 'bl.id', 'pi.location_id')
-            .select(
-                'order_item.product_id',
-                'product.name',
-                'product.sku',
-                'order_item.quantity as order_quantity',
-                'pi.location_id',
-                'bl.location_code',
-                'pi.quantity as location_quantity'
-            );
+        const results = await orderService.getOrderItems(id);
 
         res.status(200).json(results);
     } catch (err) {
