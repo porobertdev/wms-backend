@@ -12,7 +12,7 @@ const tableName = 'task_queue';
  */
 const addTask = async (type, data) => {
     try {
-        const task = knex(tableName)
+        const task = await knex(tableName)
             .insert({
                 type,
                 task_data: JSON.stringify(data),
