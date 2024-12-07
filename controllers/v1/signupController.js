@@ -3,7 +3,7 @@ const { generateJWT } = require('../../authentication/jwt');
 const { crud } = require('../../database/db');
 const { NotFoundError, userExistsError } = require('../../utils/errors');
 const loadEnvConfig = require('../../utils/loadEnv');
-const sendMail = require('../../utils/sendMail');
+const notificationService = require('../../services/v1/notifications/notificationService');
 
 loadEnvConfig();
 
@@ -27,26 +27,7 @@ const signup = async (req, res, next) => {
         const token = generateJWT({ email, username, hashedPass }, '1d');
 
         // send mail
-        sendMail({
-            to: email,
-            subject: 'Please confirm your email address.',
-            html: `
-            Hi,
-            <br><br>
-            Thanks for signing up on WMS e-commerce. We're thrilled to have you!
-            
-            <br>
-            <br>
-            To get started, please click the link below to verify we've got your correct email address. <strong>The link is available for 24 hours</strong>.
-    
-            <br>
-            <br>
-            <a href="${process.env.BASE_URL}/api/v1/signup/verify?token=${token}">Click here to verify your account.<a/>
-    
-            <br><br>
-            Regards,
-            The WMS Team`,
-        });
+        notificationService.mail.sendEmailConfirmation(email, token);
 
         res.json({
             message: 'Please check your mail inbox to confirm your email.',
