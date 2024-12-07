@@ -1,6 +1,7 @@
 const { crud } = require('../../../database/db');
 const updateOrderStatus = require('./updateOrderStatus');
 const notificationService = require('../notifications/notificationService');
+const pickingService = require('../picking/pickingService');
 
 /**
  * This gets triggered by queueWorker when a new order is detected
@@ -31,7 +32,9 @@ const processOrder = async (id, orderItems) => {
     // extract the order items from payload
     // save the items in order_item
     await crud.add('order_item', orderItems);
+
     // create picking list
+    await pickingService.createPickingList(id);
 };
 
 module.exports = processOrder;

@@ -1,6 +1,7 @@
 const queueEmitter = require('../../events/queueEmitter');
 const queueService = require('../../services/v1/queueService');
 const orderService = require('../../services/v1/orders/orderService');
+const pickingService = require('../../services/v1/picking/pickingService');
 
 const processQueue = async (type) => {
     const task = await queueService.getNextTask(type);
@@ -16,7 +17,13 @@ const processQueue = async (type) => {
         console.log(`[QUEUE WORKER] - Processing task: ${type} (ID: ${id})`);
 
         if (type === 'order') {
-            await orderService.processOrder(task_data.order_id, task_data.products);
+            await orderService.processOrder(
+                task_data.order_id,
+                task_data.products
+            );
+        } else if (type === 'picking_list') {
+            // or maybe pickingService.delegate(workerID)
+            await pickingService.processPickingList();
         }
 
         // update task status
