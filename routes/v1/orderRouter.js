@@ -9,13 +9,12 @@ const orderRouter = Router();
 
 // customer_order
 orderRouter.get('/', orderController.getAll);
-orderRouter.post('/', orderController.add);
+orderRouter.post('/', orderController.add, orderController.processOrder);
 orderRouter.put('/:id', orderController.update);
 orderRouter.get('/:id', orderController.get);
 orderRouter.delete('/:id', orderController.delete);
 
 // order item
-orderRouter.post('/:id/items', orderItemController.addOrderItems);
 orderRouter.get('/:id/items', orderItemController.getOrderItems);
 
 // order_package

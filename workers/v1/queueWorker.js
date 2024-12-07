@@ -1,5 +1,6 @@
 const queueEmitter = require('../../events/queueEmitter');
 const queueService = require('../../services/v1/queueService');
+const orderService = require('../../services/v1/orders/orderService');
 
 const processQueue = async (type) => {
     const task = await queueService.getNextTask(type);
@@ -9,17 +10,23 @@ const processQueue = async (type) => {
         return;
     }
 
+    const { id, task_data } = task;
+
     try {
-        console.log(
-            `[QUEUE WORKER] - Processing task: ${task.type} (ID: ${task.id})`
-        );
-        await queueService.completeTask(task.id);
+        console.log(`[QUEUE WORKER] - Processing task: ${type} (ID: ${id})`);
+
+        if (type === 'order') {
+            await orderService.processOrder(task_data.order_id, task_data.products);
+        }
+
+        // update task status
+        await queueService.completeTask(id);
     } catch (err) {
         console.error(
-            `[QUEUE WORKER] - Error processing task ${task.id}:`,
+            `[QUEUE WORKER] - Error processing task ${id}:`,
             err.message
         );
-        await queueService.failTask(task.id);
+        await queueService.failTask(id);
     }
 };
 
