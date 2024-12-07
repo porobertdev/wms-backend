@@ -1,5 +1,6 @@
 const { crud } = require('../../../database/db');
 const updateOrderStatus = require('./updateOrderStatus');
+const notificationService = require('../notifications/notificationService');
 
 /**
  * This gets triggered by queueWorker when a new order is detected
@@ -18,6 +19,12 @@ const processOrder = async (id, orderItems) => {
 
     // update order status to `processed`
     await updateOrderStatus(id);
+
+    // send mail confirmation
+    await notificationService.mail.sendOrderConfirmation(
+        'porobertdev@gmail.com',
+        id
+    );
 
     // TODO: send shipment tracking number
 

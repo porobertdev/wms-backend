@@ -13,6 +13,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+// TODO: refactor this code to act like a class
 const sendMail = async ({ to, subject, html }) => {
     // send mail with defined transport object
     const info = await transporter.sendMail({
@@ -50,4 +51,24 @@ const sendEmailConfirmation = async (to, token) => {
     await sendMail(data);
 };
 
-module.exports = { sendEmailConfirmation };
+const sendOrderConfirmation = async (to, id) => {
+    const data = {
+        to,
+        subject: `[ORDER-${id}] - Your order has been confirmed.`,
+        html: `
+        Hi,
+        <br><br>
+        Thank you for choosing us!
+
+        <br>
+        <br>
+        We'll send you the items as soon as possible. In the meantime, you can track your order status here: <a href="https://google.com">placeholder link</a>
+
+        <br><br>
+        Regards,
+        The WMS Team`,
+    };
+    await sendMail(data);
+};
+
+module.exports = { sendEmailConfirmation, sendOrderConfirmation };
