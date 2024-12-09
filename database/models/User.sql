@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS users(
     role_id INT REFERENCES user_role(id) ON DELETE SET NULL NOT NULL,
     username VARCHAR(5) UNIQUE NOT NULL,
     password VARCHAR(4) NOT NULL,
-    created_at DATE DEFAULT CURRENT_DATE
+    created_at DATE DEFAULT CURRENT_DATE,
+    islogged BOOLEAN DEFAULT FALSE
 );
 
 -- users for customers on the e-commerce platform
