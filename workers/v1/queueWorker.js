@@ -23,7 +23,10 @@ const processQueue = async (type) => {
             );
         } else if (type === 'picking_list') {
             // or maybe pickingService.delegate(workerID)
-            await pickingService.processPickingList();
+            await pickingService.processPickingList(
+                task_data.order_id,
+                task_data.products
+            );
         }
 
         // update task status

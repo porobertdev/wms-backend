@@ -17,7 +17,7 @@ const processOrder = async (req, res, next) => {
             {
                 order_id,
                 product_id: 50,
-                quantity: 20,
+                quantity: 750,
                 price: 250,
             },
             {
