@@ -1,5 +1,6 @@
 const express = require('express');
 const loadEnvConfig = require('./utils/loadEnv');
+const cors = require('cors');
 const { rootRouter: v1RootRouter } = require('./routes/v1/rootRouter');
 const db = require('./database/db');
 const { handleError } = require('./middleware/handleError');
@@ -20,6 +21,13 @@ const app = express();
 // Middleware to save payload data on req.body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Set CORS to allow requests from frontend
+app.use(
+    cors({
+        origin: process.env.FRONTEND_HOST,
+    })
+);
 
 app.get('/', (req, res) => res.send('<h2>Its working</h2>'));
 
