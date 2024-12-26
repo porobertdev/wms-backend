@@ -1,5 +1,6 @@
 const express = require('express');
 const loadEnvConfig = require('./utils/loadEnv');
+const helmet = require('helmet');
 const cors = require('cors');
 const { rootRouter: v1RootRouter } = require('./routes/v1/rootRouter');
 const db = require('./database/db');
@@ -22,12 +23,19 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+/*
+    Set security-related HTTP headers
+    as seen on: https://blog.risingstack.com/node-js-security-checklist/#:~:text=Security%20HTTP%20Headers
+*/
+app.use(helmet());
+
 // Set CORS to allow requests from frontend
 app.use(
     cors({
         origin: process.env.FRONTEND_HOST,
     })
 );
+
 // Reduce fingerprinting
 app.disable('x-powered-by');
 
