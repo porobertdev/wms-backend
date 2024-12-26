@@ -9,7 +9,7 @@ loadEnvConfig();
 
 const signup = async (req, res, next) => {
     // extract credentials
-    const { email, username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
         // hash the password
@@ -17,14 +17,14 @@ const signup = async (req, res, next) => {
 
         // save in db
         const results = await crud.add('c_users', [
-            { email, username, password: hashedPass, role_id: 1 },
+            { email, password: hashedPass, role_id: 1 },
         ]);
 
         // user already exists
         if (!results) throw userExistsError;
 
         // generate token
-        const token = generateJWT({ email, username, hashedPass }, '1d');
+        const token = generateJWT({ email, hashedPass }, '1d');
 
         // send mail
         notificationService.mail.sendEmailConfirmation(email, token);
