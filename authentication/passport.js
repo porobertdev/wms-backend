@@ -11,7 +11,6 @@ passport.deserializeUser(async (id, done) => {
     try {
         const { rows } = await crud.get('c_users', { id });
         const user = rows[0];
-
         // user found, no error. Send it to passport.authenticate()
         done(null, user);
     } catch (err) {

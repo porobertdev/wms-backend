@@ -3,16 +3,16 @@ const { crud } = require('../database/db');
 
 const LocalStrategy = require('passport-local').Strategy;
 
-const verifyCb = async (username, password, done) => {
+const verifyCb = async (email, password, done) => {
     try {
         // table name is hardcoded for now since it's used only for customer users
-        const rows = await crud.get('c_users', { username });
+        const rows = await crud.get('c_users', { email });
         const user = rows[0];
         console.log('🚀 ~ verifyCb ~ user:', user);
 
-        // validate username
+        // validate email
         if (!user) {
-            return done(null, false, { message: 'Incorrect username' });
+            return done(null, false, { message: 'Incorrect email' });
         }
 
         // check that email is confirmed
@@ -33,4 +33,5 @@ const verifyCb = async (username, password, done) => {
     }
 };
 
-module.exports = new LocalStrategy(verifyCb);
+// thanks https://stackoverflow.com/a/18142000
+module.exports = new LocalStrategy({ usernameField: 'email' }, verifyCb);
