@@ -30,6 +30,7 @@ const signup = async (req, res, next) => {
         notificationService.mail.sendEmailConfirmation(email, token);
 
         res.json({
+            success: true,
             message: 'Please check your mail inbox to confirm your email.',
         });
     } catch (err) {

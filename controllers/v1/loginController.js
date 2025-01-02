@@ -31,7 +31,15 @@ const post = [
         but for simplicity, just set it as a cookie
         */
         res.cookie('bearer-token', bearerToken);
-        res.json({ message: 'You have logged in successfully.' });
+        res.json({
+            message: 'You have logged in successfully.',
+            user: {
+                id: req.user.id,
+                email: req.user.email,
+                role_id: req.user.role_id,
+                isverified: req.user.isverified,
+            },
+        });
         // res.redirect('/');
     },
 ];
