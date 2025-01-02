@@ -20,6 +20,10 @@ const userExistsError = createReqError(
     'An account with that email already exists.'
 );
 const notAuthenticatedError = createReqError(401, 'You are not authenticated');
+const NotVerifiedEmail = createReqError(
+    401,
+    'Please check your inbox to verify your email.'
+);
 
 module.exports = {
     ValidationError,
@@ -28,4 +32,5 @@ module.exports = {
     invalidTokenError,
     userExistsError,
     notAuthenticatedError,
+    NotVerifiedEmail,
 };

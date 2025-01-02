@@ -16,9 +16,10 @@ const verifyCb = async (email, password, done) => {
         }
 
         // check that email is confirmed
-        if (!user.isverified) {
+        // TODO: find how to handle this from here and remove isEmailVerified middleware
+        /* if (!user.isverified) {
             return done(null, false, { message: 'Please verify your email.' });
-        }
+        } */
 
         // validate password
         const match = await bcrypt.compare(password, user.password);

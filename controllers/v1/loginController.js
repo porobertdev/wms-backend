@@ -1,5 +1,6 @@
 const { generateJWT } = require('../../authentication/jwt');
 const passport = require('../../authentication/passport');
+const isEmailVerified = require('../../middleware/isEmailVerified');
 const loadEnvConfig = require('../../utils/loadEnv');
 
 loadEnvConfig();
@@ -15,6 +16,7 @@ const post = [
         // failureMessage: true,
         session: false,
     }),
+    isEmailVerified,
     (req, res) => {
         /*
         This middleware runs if authentication is successful, so `req.user` from passport is available
