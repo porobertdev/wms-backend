@@ -23,3 +23,9 @@ CREATE TABLE IF NOT EXISTS product(
     category_id INT REFERENCES product_category(id) ON DELETE SET NULL,
     manufacturer_id INT REFERENCES product_manufacturer(id) ON DELETE CASCADE NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS product_favorites(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    customer_id INT REFERENCES c_users(id) NOT NULL,
+    product_id INT REFERENCES product(id) NOT NULL
+);

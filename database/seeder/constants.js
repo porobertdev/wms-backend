@@ -44,6 +44,29 @@ const NUM_INVENTORY_TRANSACTIONS = 5000;
 const TRANSACTION_TYPES = ['transfer'];
 // Orders
 const NUM_ORDERS = 20000;
+const NUM_ACCOUNT_LEVELS = [
+    // level: orders
+    {
+        level: 1,
+        orders: 100,
+    },
+    {
+        level: 2,
+        orders: 200,
+    },
+    {
+        level: 3,
+        orders: 300,
+    },
+    {
+        level: 4,
+        orders: 400,
+    },
+    {
+        level: 5,
+        orders: 500,
+    },
+];
 // Drivers
 const NUM_CARS = 50;
 const NUM_DRIVERS = 20;
@@ -70,4 +93,5 @@ module.exports = {
     USER_ROLES,
     PRODUCT_COUNTER_TYPES,
     TRANSACTION_TYPES,
+    NUM_ACCOUNT_LEVELS,
 };
