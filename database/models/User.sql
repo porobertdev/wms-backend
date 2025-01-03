@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS c_users(
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
     role_id INT REFERENCES user_role(id) ON DELETE SET NULL,
+    account_level INT DEFAULT 1,
     isverified BOOLEAN DEFAULT FALSE,
     created_at DATE DEFAULT CURRENT_DATE
 );
