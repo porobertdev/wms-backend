@@ -26,6 +26,6 @@ CREATE TABLE IF NOT EXISTS product(
 
 CREATE TABLE IF NOT EXISTS product_favorites(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    customer_id INT REFERENCES c_users(id) NOT NULL,
-    product_id INT REFERENCES product(id) NOT NULL
+    c_user_id INT REFERENCES c_users(id) NOT NULL,
+    product_id INT REFERENCES product(id) UNIQUE NOT NULL
 );
