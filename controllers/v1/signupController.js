@@ -46,7 +46,11 @@ const signup = async (req, res, next) => {
         const token = generateJWT({ email, hashedPass }, '1d');
 
         // send mail
-        notificationService.mail.sendEmailConfirmation(email, token);
+        notificationService.mail.sendEmailConfirmation(
+            email,
+            token,
+            first_name
+        );
 
         res.json({
             success: true,

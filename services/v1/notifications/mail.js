@@ -27,12 +27,12 @@ const sendMail = async ({ to, subject, html }) => {
     // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
 };
 
-const sendEmailConfirmation = async (to, token) => {
+const sendEmailConfirmation = async (to, token, first_name) => {
     const data = {
         to,
         subject: 'Please confirm your email address.',
         html: `
-        Hi,
+        Hi ${first_name},
         <br><br>
         Thanks for signing up on WMS e-commerce. We're thrilled to have you!
         
