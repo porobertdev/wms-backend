@@ -10,6 +10,8 @@ loadEnvConfig();
 const signup = async (req, res, next) => {
     // extract credentials
     const { email, password } = req.body;
+    const { first_name, last_name, birth_date, city, address, phone_number } =
+        req.body;
 
     try {
         // hash the password
@@ -22,6 +24,23 @@ const signup = async (req, res, next) => {
 
         // user already exists
         if (!results) throw userExistsError;
+
+        // save person info
+        const person = await crud.add('person', [
+            {
+                first_name,
+                last_name,
+                birth_date /* new Date(birth_date).toISOString().slice(0, 10) */,
+                city,
+                address,
+                phone_number,
+            },
+        ]);
+
+        // add new customer
+        const customer = await crud.add('customer', [
+            { person_id: person[0].id, type: 'business' },
+        ]);
 
         // generate token
         const token = generateJWT({ email, hashedPass }, '1d');
