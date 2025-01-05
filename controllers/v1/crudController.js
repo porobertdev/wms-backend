@@ -32,7 +32,12 @@ module.exports = (tableName) => {
         get: async (req, res, next) => {
             try {
                 const { id } = req.params;
-                const results = await crud.get(tableName, { id });
+                const conditions = req.query || {};
+
+                const results = await crud.get(
+                    tableName,
+                    id ? { id } : conditions
+                );
 
                 res.status(200).json(results);
             } catch (err) {
