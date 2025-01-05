@@ -5,8 +5,9 @@ const loadEnvConfig = require('../../utils/loadEnv');
 
 loadEnvConfig();
 
+// this route gets accessed as redirect when passport fails to authenticate user
 const get = (req, res) => {
-    res.json({ message: 'Login page' });
+    res.json({ error: 'Email/password is wrong.' });
 };
 
 const post = [
