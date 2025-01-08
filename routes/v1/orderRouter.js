@@ -8,9 +8,11 @@ const {
 const orderRouter = Router();
 
 // customer_order
-orderRouter.get('/', orderController.getAll);
+orderRouter.get('/all', orderController.getAll);
 orderRouter.post('/', orderController.add, orderController.processOrder);
 orderRouter.put('/:id', orderController.update);
+// query to get customer's orders
+orderRouter.get('/', orderController.get);
 orderRouter.get('/:id', orderController.get);
 orderRouter.delete('/:id', orderController.delete);
 

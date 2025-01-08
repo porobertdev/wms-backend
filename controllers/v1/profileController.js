@@ -1,6 +1,12 @@
-const { crud } = require('../../database/db');
+const getUserInfo = require('../../services/v1/profile/getUserInfo');
+const {
+    getFavoriteProducts,
+    addProductToFavorite,
+    removeFavoriteProduct,
+} = require('../../services/v1/profile/favorites');
 const updateAccountLevel = require('../../services/v1/profile/updateAccountLevel');
-const { NotFoundError, userExistsError } = require('../../utils/errors');
+const getCustomerOrders = require('../../services/v1/orders/getCustomerOrders');
+const getPersonInfo = require('../../services/v1/profile/getPersonInfo');
 
 const account = async (req, res, next) => {
     const { user } = req;
@@ -10,16 +16,59 @@ const account = async (req, res, next) => {
     await updateAccountLevel(user.id);
 };
 
-// TODO: WIP
-const getOrders = async (req, res, next) => {
+const getAccountInfo = async (req, res, next) => {
     try {
-        const { id } = req.user;
-        const results = await crud.get('customer_order', { id });
+        const { id } = req.params;
+        // const favorites = await getFavoriteProducts(id);
+        const user = await getUserInfo(id);
+        const person = await getPersonInfo(id);
+        const orders = await getCustomerOrders(id);
 
-        res.status(200).json(results);
+        res.json({ user, person, orders /* favorites */ });
     } catch (err) {
         next(err);
     }
 };
 
-module.exports = account;
+const getFavorites = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const results = await getFavoriteProducts(id);
+
+        res.json(results);
+    } catch (err) {
+        next(err);
+    }
+};
+
+const addProductToFavorites = async (req, res, next) => {
+    try {
+        const { customer_user_id, product_id } = req.body;
+        const result = await addProductToFavorite(customer_user_id, product_id);
+
+        res.json({ result });
+    } catch (err) {
+        next(err);
+    }
+};
+
+const deleteFavoriteProduct = async (req, res, next) => {
+    try {
+        const { customer_user_id, product_id } = req.body;
+        const result = await removeFavoriteProduct(
+            customer_user_id,
+            product_id
+        );
+
+        res.json({ result });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = {
+    getAccountInfo,
+    getFavorites,
+    addProductToFavorites,
+    deleteFavoriteProduct,
+};
