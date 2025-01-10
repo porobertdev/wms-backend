@@ -8,7 +8,8 @@ const orderPackageController = crudController('order_package');
 
 const processOrder = async (req, res, next) => {
     // order_id
-    const { order_id } = req;
+    const order_id = req.body.customer_order.id;
+    console.log('🚀 ~ processOrder ~ order_id:', order_id);
 
     // TODO: use req.body which holds array passed from frontend
     const mockPayload = {
@@ -36,6 +37,7 @@ const processOrder = async (req, res, next) => {
 
         res.status(201).json({
             message: `Order ${order_id} has been processed.`,
+            customer_order: req.body.customer_order,
         });
     } catch (err) {
         next(err);

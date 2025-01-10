@@ -13,16 +13,12 @@ module.exports = (tableName) => {
                 const results = await crud.add(tableName, [req.body]);
                 console.log('🚀 ~ add: ~ results:', results);
 
-                // TODO: get rid of this shit XD
-                if (tableName === 'customer_order') {
-                    req.order_id = results[0].id;
-                }
-
-                res.status(201).json({ results });
-
                 // needed for processOrder controller
                 if (tableName === 'customer_order') {
+                    req.body.customer_order = results[0];
                     next();
+                } else {
+                    res.status(201).json({ results });
                 }
             } catch (err) {
                 next(err);
