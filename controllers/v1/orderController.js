@@ -9,7 +9,7 @@ const orderPackageController = crudController('order_package');
 const processOrder = async (req, res, next) => {
     // order_id
     const order_id = req.body.customer_order.id;
-    console.log('🚀 ~ processOrder ~ order_id:', order_id);
+    const products = req.body;
 
     // TODO: use req.body which holds array passed from frontend
     const mockPayload = {
@@ -33,7 +33,7 @@ const processOrder = async (req, res, next) => {
 
     try {
         // add order into the queue
-        await queueService.addTask('order', mockPayload);
+        await queueService.addTask('order', products ? products : mockPayload);
 
         res.status(201).json({
             message: `Order ${order_id} has been processed.`,
