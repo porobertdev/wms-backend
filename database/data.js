@@ -23,6 +23,10 @@ const {
     BIN_LOCATION_CODES,
 } = require('./seeder/constants');
 
+// Adam T - I like the use of faker here, you are aware that you have duplicate values in the data,
+// and your columns may require unique values - check this https://fakerjs.dev/guide/unique
+// Also very common practice (actually, just standard practice) to use UUIDs for IDs and not integers
+
 const warehouse = {
     name: 'warehouse',
     data: Array.from({ length: NUM_WAREHOUSES }, () => {

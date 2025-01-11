@@ -5,6 +5,7 @@ const loadEnvConfig = require('../utils/loadEnv');
 loadEnvConfig();
 
 const generateJWT = (payload, expiresIn) => {
+    // Adam T - Looks good, though I would pass a default value to expiresIn
     const bearerToken = jwt.sign(payload, process.env.JWT_SECRET, {
         algorithm: 'HS256',
         expiresIn,
@@ -13,7 +14,7 @@ const generateJWT = (payload, expiresIn) => {
     return bearerToken;
 };
 
-const isJWTValid = (token) => {
+const isJWTValid = (token) => { // Adam T - Looks good
     try {
         jwt.verify(token, process.env.JWT_SECRET);
         return true;
@@ -32,6 +33,8 @@ const extractJWT = (cookie) => {
     try {
         return cookie.split('bearer-token=')[1].replace(';', '');
     } catch (err) {
+        // Adam T - JS is notoriously rubbish for error handling
+        // any plans to write a custom error handler?
         console.error('Token not found!', err.message);
     }
 };

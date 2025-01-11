@@ -40,6 +40,8 @@ const getOrderItems = async (id) => {
         Filter the products so that we end up with an array of
         unique objects, where each object contains a `locations` array.
         */
+
+        // Adam T - Why not just use products.filter here?
         const filtered = [];
 
         products.forEach((item) => {
