@@ -6,3 +6,10 @@ CREATE TABLE IF NOT EXISTS customer(
     person_id INT REFERENCES person(id) ON DELETE CASCADE NOT NULL,
     c_user_id INT REFERENCES c_users(id) ON DELETE CASCADE NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS shopping_cart(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    c_user_id INT REFERENCES c_users(id) ON DELETE CASCADE NOT NULL,
+    product_id INT REFERENCES product(id) NOT NULL,
+    quantity INT NOT NULL
+);
