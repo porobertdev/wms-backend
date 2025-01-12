@@ -15,8 +15,7 @@ profileRouter.use('/', verifyAcessToken, (req, res, next) => {
 profileRouter.use('/cart', shoppingCartRouter);
 
 profileRouter.get('/account/:id', profileController.getAccountInfo);
-profileRouter.get('/orders');
-profileRouter.get('/orders/:id', orderController.get);
+profileRouter.get('/orders', orderController.get);
 
 // favorites
 profileRouter.get('/favorites/:id', profileController.getFavorites);
