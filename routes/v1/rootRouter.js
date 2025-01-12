@@ -17,6 +17,7 @@ const isAuthenticated = require('../../middleware/isAuthenticated');
 const verifyAcessToken = require('../../middleware/verifyJWT');
 const loadEnvConfig = require('../../utils/loadEnv');
 const profileRouter = require('./profileRouter');
+const scraperRouter = require('./scraperRouter');
 
 loadEnvConfig();
 
@@ -48,5 +49,8 @@ rootRouter.use('/shop', isAuthenticated, verifyAcessToken, (req, res) => {
     res.json({ message: 'You are allowed to access the shop' });
 });
 rootRouter.use('/profile', profileRouter);
+
+// SCRAPER
+rootRouter.use('/scraper', scraperRouter);
 
 module.exports = { rootRouter };
