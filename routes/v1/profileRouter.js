@@ -2,6 +2,7 @@ const { Router } = require('express');
 const verifyAcessToken = require('../../middleware/verifyJWT');
 const { orderController } = require('../../controllers/v1/orderController');
 const profileController = require('../../controllers/v1/profileController');
+const shoppingCartRouter = require('./shoppingCartRouter');
 
 const profileRouter = Router();
 
@@ -10,6 +11,9 @@ profileRouter.use('/', verifyAcessToken, (req, res, next) => {
     console.log(`New profile request: ${req.url}`);
     next();
 });
+
+profileRouter.use('/cart', shoppingCartRouter);
+
 profileRouter.get('/account/:id', profileController.getAccountInfo);
 profileRouter.get('/orders');
 profileRouter.get('/orders/:id', orderController.get);

@@ -29,11 +29,13 @@ module.exports = (tableName) => {
             try {
                 const { id } = req.params;
                 const conditions = req.query || {};
+                console.log('🚀 ~ get: ~ conditions:', conditions);
 
                 const results = await crud.get(
                     tableName,
                     id ? { id } : conditions
                 );
+                console.log('🚀 ~ get: ~ results:', results);
 
                 res.status(200).json(results);
             } catch (err) {
@@ -60,10 +62,12 @@ module.exports = (tableName) => {
         update: async (req, res, next) => {
             try {
                 const { id } = req.params;
+                const conditions = req.query || {};
                 const data = req.body;
+                console.log('🚀 ~ update: ~ data:', data);
                 const results = await crud.update(tableName, {
                     data,
-                    where: { id },
+                    where: id ? { id } : conditions,
                 });
 
                 if (!results.length) {
@@ -84,8 +88,13 @@ module.exports = (tableName) => {
         delete: async (req, res, next) => {
             try {
                 const { id } = req.params;
+                const conditions = req.query || {};
+
                 // TODO: support deleting based on any column
-                const results = await crud.delete(tableName, { id });
+                const results = await crud.delete(
+                    tableName,
+                    id ? { id } : conditions
+                );
 
                 if (!results.length) {
                     res.status(404).json({
