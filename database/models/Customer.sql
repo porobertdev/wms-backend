@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS customer(
 CREATE TABLE IF NOT EXISTS shopping_cart(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     c_user_id INT REFERENCES c_users(id) ON DELETE CASCADE NOT NULL,
-    product_id INT REFERENCES product(id) NOT NULL,
+    product_id INT REFERENCES product(id) NOT NULL UNIQUE,
     quantity INT NOT NULL
 );
